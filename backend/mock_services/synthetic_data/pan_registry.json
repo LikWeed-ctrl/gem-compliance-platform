@@ -1,0 +1,27 @@
+{
+  "AABCB1234C": { "name": "Bharat Engineering Works Pvt Ltd", "status": "Active" },
+  "AAJCS5678D": { "name": "Suvidha Infratech Private Limited", "status": "Active" },
+  "AAFCG9012E": { "name": "Global Manufacturing Solutions Pvt Ltd", "status": "Active" },
+  "AFZPR3456F": { "name": "Rakesh Traders", "status": "Active" },
+  "AABCS7890G": { "name": "Star Builders", "status": "Active" },
+  "AAECN2345H": { "name": "NextGen Startup Technologies", "status": "Active" },
+  "AGXPO6789I": { "name": "Om Sai Enterprises", "status": "Active" },
+  "AABCP0123J": { "name": "Precision Tools & Dies Pvt Ltd", "status": "Active" },
+  "AFYPS4567K": { "name": "Sundaram Electricals", "status": "Active" },
+  "AJZPA8901L": { "name": "Aravali Steel Fabricators", "status": "Active" },
+  "AABCT2345M": { "name": "TechnoServe Systems Ltd", "status": "Active" },
+  "AKQPG6789N": { "name": "Ganesh Constructions", "status": "Active" },
+  "AAJCH3456O": { "name": "Himalaya Pharma Distributors", "status": "Active" },
+  "AAECC5678P": { "name": "Coastal Marine Engineering", "status": "Active" },
+  "AFXPD7890Q": { "name": "Deccan Agro Industries", "status": "Active" },
+  "AABCZ8901R": { "name": "Zenith Software Solutions", "status": "Active" },
+
+  "AAJCM9929L": { "name": "MADRECHA SOLUTIONS PRIVATE LIMITED", "status": "Active" },
+  "AABCN0379D": { "name": "Nissin ABC Logistics Private Limited", "status": "Active" },
+
+  "AADFA3083E": { "name": "ABC Organics And Specialty Chemicals Ltd", "status": "Active" },
+
+  "AABFT8343A": { "name": "THE BHARAT GENERAL STORE", "status": "Active" },
+  "BISPM6529D": { "name": "Star Builders", "status": "Active" },
+  "AAECI8242H": { "name": "Intelliro Infratech Pvt Ltd", "status": "Active" }
+}

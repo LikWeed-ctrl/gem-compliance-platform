@@ -1,0 +1,16 @@
+{
+  "UDYAM-MH-01-0001234": { "name": "Bharat Engineering Works Pvt Ltd", "status": "Active" },
+  "UDYAM-KA-03-0005678": { "name": "Suvidha Infratech Private Limited", "status": "Active" },
+  "UDYAM-DL-06-0009012": { "name": "Global Manufacturing Solutions Pvt Ltd", "status": "Active" },
+  "UDYAM-GJ-02-0003456": { "name": "Rakesh Traders", "status": "Active" },
+  "UDYAM-UP-10-0007890": { "name": "Star Builders", "status": "Active" },
+  "UDYAM-WB-04-0002345": { "name": "NextGen Startup Technologies", "status": "Active" },
+  "UDYAM-RJ-05-0006789": { "name": "Om Sai Enterprises", "status": "Active" },
+  "UDYAM-MH-01-0000123": { "name": "Precision Tools & Dies Pvt Ltd", "status": "Active" },
+  "UDYAM-TN-06-0004567": { "name": "Sundaram Electricals", "status": "Active" },
+  "UDYAM-RJ-05-0008901": { "name": "Aravali Steel Fabricators", "status": "Expired - Renewal Required" },
+  "UDYAM-GJ-02-0006789": { "name": "Ganesh Constructions", "status": "Active" },
+  "UDYAM-HP-07-0003456": { "name": "Himalaya Pharma Distributors", "status": "Active" },
+  "UDYAM-TS-08-0007890": { "name": "Deccan Agro Industries", "status": "Active" },
+  "UDYAM-HR-09-0008901": { "name": "Zenith Software Solutions", "status": "Active" }
+}
