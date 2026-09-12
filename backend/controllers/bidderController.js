@@ -6,42 +6,63 @@ const AuditLog = require("../models/AuditLog");
 const Document = require("../models/Document");
 
 const { runBidSubmissionChecks } = require("../services/verificationOrchestrator");
-const { runTenderSpecificRules } = require("../services/ruleEngine");
 const { calculateComplianceScore } = require("../services/scoringEngine");
-const { generateRecommendation } = require("../services/recommendationEngine");
+
+// Helper to check bid ownership for SELLERS
+function isAuthorizedForBid(req, bid) {
+    if (req.user.role === "SELLER") {
+        const profileId = bid.sellerProfile._id ? bid.sellerProfile._id : bid.sellerProfile;
+        return profileId.toString() === req.user.sellerProfileId.toString();
+    }
+    return true; // OFFICERS and ADMINS can access any bid
+}
 
 async function createBidder(req, res) {
   try {
     const { sellerProfileData, bidSubmissionData } = req.body;
     
-    // Create or find SellerProfile
-    let sellerProfile;
-    if (sellerProfileData.panNumber) {
-        sellerProfile = await SellerProfile.findOne({ panNumber: sellerProfileData.panNumber });
-    }
-    
-    if (!sellerProfile) {
-        sellerProfile = await SellerProfile.create(sellerProfileData);
+    let sellerProfileId = req.user.sellerProfileId;
+
+    if (req.user.role === "SELLER") {
+        if (!sellerProfileId) return res.status(403).json({ error: "Seller profile required" });
     } else {
-        // Update it if needed
-        Object.assign(sellerProfile, sellerProfileData);
-        await sellerProfile.save();
+        // If officer is creating it manually for testing, they must pass panNumber or sellerProfileId
+        if (req.body.sellerProfileId) {
+            sellerProfileId = req.body.sellerProfileId;
+        } else if (sellerProfileData && sellerProfileData.panNumber) {
+            let sp = await SellerProfile.findOne({ panNumber: sellerProfileData.panNumber });
+            if (!sp) sp = await SellerProfile.create(sellerProfileData);
+            sellerProfileId = sp._id;
+        } else {
+            return res.status(400).json({ error: "Seller Profile identification required" });
+        }
     }
 
-    bidSubmissionData.sellerProfile = sellerProfile._id;
-    const bidSubmission = await BidSubmission.create(bidSubmissionData);
+    // Do not allow client to set restricted fields
+    const safeBidData = {
+        tender: bidSubmissionData.tender,
+        sellerProfile: sellerProfileId,
+        declaredTurnoverLakhs: bidSubmissionData.declaredTurnoverLakhs,
+        declaredLocalContentPercent: bidSubmissionData.declaredLocalContentPercent,
+        miiClass: bidSubmissionData.miiClass,
+        isOemForOfferedCatalog: bidSubmissionData.isOemForOfferedCatalog,
+        requestingEmdExemption: bidSubmissionData.requestingEmdExemption,
+        emdExemptionCategory: bidSubmissionData.emdExemptionCategory
+    };
+
+    const bidSubmission = await BidSubmission.create(safeBidData);
 
     await AuditLog.create({
-      sellerProfile: sellerProfile._id,
+      sellerProfile: sellerProfileId,
       bidSubmission: bidSubmission._id,
       tender: bidSubmission.tender,
       actionType: "DOCUMENT_UPLOADED", 
-      actor: "system",
-      actorRole: "SYSTEM",
-      description: `Bid submission record created for ${sellerProfile.companyName}`,
+      actor: req.user._id,
+      actorRole: req.user.role,
+      description: `Bid submission record created`,
     });
 
-    res.status(201).json({ bidSubmission, sellerProfile });
+    res.status(201).json({ bidSubmission });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -61,11 +82,11 @@ async function getBidderById(req, res) {
   try {
     const bid = await BidSubmission.findById(req.params.id).populate("tender").populate("sellerProfile");
     if (!bid) return res.status(404).json({ error: "Bid not found" });
+
+    if (!isAuthorizedForBid(req, bid)) return res.status(403).json({ error: "Forbidden: Cannot access another seller's bid" });
+
     const allDocs = await Document.find({
-        $or: [
-            { bidSubmission: req.params.id },
-            { sellerProfile: bid.sellerProfile._id }
-        ]
+        bidSubmission: req.params.id
     }).sort({ createdAt: -1 });
 
     const latestDocs = [];
@@ -86,26 +107,24 @@ async function getBidderById(req, res) {
 
 async function runChecksForBidder(req, res) {
   try {
-    const bid = await BidSubmission.findById(req.params.id).populate("sellerProfile");
-    if (!bid) return res.status(404).json({ error: "Bid not found" });
+      const bid = await BidSubmission.findById(req.params.id).populate("tender sellerProfile");
+      if (!bid) return res.status(404).json({ error: "Bid not found" });
 
-    const tender = await Tender.findById(bid.tender);
-    if (!tender) return res.status(404).json({ error: "Associated tender not found" });
+      if (!isAuthorizedForBid(req, bid)) {
+          return res.status(403).json({ error: "Forbidden: Cannot run checks for another seller's bid" });
+      }
 
-    const profile = bid.sellerProfile;
-    const checks = await runBidSubmissionChecks(bid, profile);
-    const tenderRuleChecks = await runTenderSpecificRules(bid._id, bid, tender);
-    const { finalScore, riskLevel } = await calculateComplianceScore(bid._id);
-    const recommendation = await generateRecommendation(bid._id);
+      const profile = bid.sellerProfile;
+      const checks = await runBidSubmissionChecks(bid, profile);
+      const { finalScore, riskLevel, recommendation } = await calculateComplianceScore(bid._id);
 
-    res.json({
-      message: `${checks.length + tenderRuleChecks.length} compliance checks completed`,
+      res.json({
+      message: `${checks.length} compliance checks completed`,
       bidderId: bid._id,
       complianceScore: finalScore,
       riskLevel: riskLevel,
       aiRecommendation: recommendation,
       generalChecks: checks,
-      tenderSpecificChecks: tenderRuleChecks,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -118,10 +137,13 @@ async function getChecksForBidder(req, res) {
     const bid = await BidSubmission.findById(req.params.id);
     if (!bid) return res.status(404).json({ error: "Bid not found" });
 
+    if (!isAuthorizedForBid(req, bid)) return res.status(403).json({ error: "Forbidden" });
+
     const checks = await ComplianceCheck.find({
         $or: [
             { bidSubmission: req.params.id },
-            { sellerProfile: bid.sellerProfile }
+            { sellerProfile: bid.sellerProfile._id, bidSubmission: null },
+            { sellerProfile: bid.sellerProfile._id, bidSubmission: { $exists: false } }
         ]
     }).sort({ createdAt: -1 });
 
@@ -135,7 +157,6 @@ async function getChecksForBidder(req, res) {
         }
     }
     
-    // Sort them back alphabetically for consistent UI
     latestChecks.sort((a, b) => a.category.localeCompare(b.category));
 
     res.json(latestChecks);
@@ -150,12 +171,15 @@ async function getAuditTrail(req, res) {
     const bid = await BidSubmission.findById(req.params.id);
     if (!bid) return res.status(404).json({ error: "Bid not found" });
 
+    if (!isAuthorizedForBid(req, bid)) return res.status(403).json({ error: "Forbidden" });
+
     const logs = await AuditLog.find({
         $or: [
             { bidSubmission: req.params.id },
-            { sellerProfile: bid.sellerProfile }
+            { sellerProfile: bid.sellerProfile._id, bidSubmission: null },
+            { sellerProfile: bid.sellerProfile._id, bidSubmission: { $exists: false } }
         ]
-    }).sort({ timestamp: 1 }); 
+    }).sort({ timestamp: -1 }); 
     res.json(logs);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -165,44 +189,48 @@ async function getAuditTrail(req, res) {
 
 async function createBidderWithDocuments(req, res) {
   try {
-    const { sellerProfileId, sellerProfileData, bidSubmissionData, documents } = req.body;
+    const { bidSubmissionData, documents } = req.body;
 
-    let sellerProfile;
-    if (sellerProfileId) {
-        sellerProfile = await SellerProfile.findById(sellerProfileId);
-    } else if (sellerProfileData && sellerProfileData.panNumber) {
-        sellerProfile = await SellerProfile.findOne({ panNumber: sellerProfileData.panNumber });
-    }
-    
-    if (!sellerProfile) {
-        if (!sellerProfileData) throw new Error("Seller profile data required if no ID provided");
-        sellerProfile = await SellerProfile.create(sellerProfileData);
-    } else if (sellerProfileData) {
-        Object.assign(sellerProfile, sellerProfileData);
-        await sellerProfile.save();
+    let sellerProfileId = req.user.sellerProfileId;
+
+    if (req.user.role === "SELLER") {
+        if (!sellerProfileId) return res.status(403).json({ error: "Seller profile required" });
+    } else {
+        if (req.body.sellerProfileId) sellerProfileId = req.body.sellerProfileId;
+        else return res.status(400).json({ error: "Seller Profile identification required" });
     }
 
-    bidSubmissionData.sellerProfile = sellerProfile._id;
-    const bidSubmission = await BidSubmission.create(bidSubmissionData);
+    const safeBidData = {
+        tender: bidSubmissionData.tender,
+        sellerProfile: sellerProfileId,
+        declaredTurnoverLakhs: bidSubmissionData.declaredTurnoverLakhs,
+        declaredLocalContentPercent: bidSubmissionData.declaredLocalContentPercent,
+        miiClass: bidSubmissionData.miiClass,
+        isOemForOfferedCatalog: bidSubmissionData.isOemForOfferedCatalog,
+        requestingEmdExemption: bidSubmissionData.requestingEmdExemption,
+        emdExemptionCategory: bidSubmissionData.emdExemptionCategory
+    };
+
+    const bidSubmission = await BidSubmission.create(safeBidData);
 
     await AuditLog.create({
-      sellerProfile: sellerProfile._id,
+      sellerProfile: sellerProfileId,
       bidSubmission: bidSubmission._id,
       tender: bidSubmission.tender,
       actionType: "DOCUMENT_UPLOADED",
-      actor: "system",
-      actorRole: "SYSTEM",
-      description: `Bid submission record created for ${sellerProfile.companyName} via document-based submission (${documents?.length || 0} documents)`,
+      actor: req.user._id,
+      actorRole: req.user.role,
+      description: `Bid submission record created via document-based submission (${documents?.length || 0} documents)`,
     });
 
     const savedDocuments = [];
     for (const doc of documents || []) {
       const documentRecord = await Document.create({
-        sellerProfile: sellerProfile._id,
+        sellerProfile: sellerProfileId,
         bidSubmission: doc.documentCategory === "TENDER_SPECIFIC" ? bidSubmission._id : null,
         documentCategory: doc.documentCategory || "REGISTRATION",
         docType: doc.docType,
-        filePath: doc.tempFilePath,
+        filePath: doc.tempFilePath, // WARNING: in a real app, verify this path belongs to this upload session and user!
         originalFilename: doc.originalFilename,
         extractedFields: doc.extractedFields,
         ocrConfidence: doc.ocrConfidence,
@@ -211,17 +239,17 @@ async function createBidderWithDocuments(req, res) {
       savedDocuments.push(documentRecord);
 
       await AuditLog.create({
-        sellerProfile: sellerProfile._id,
+        sellerProfile: sellerProfileId,
         bidSubmission: bidSubmission._id,
         actionType: "OCR_EXTRACTED",
-        actor: "system",
-        actorRole: "SYSTEM",
+        actor: req.user._id,
+        actorRole: req.user.role,
         description: `Document linked: ${doc.docType} (${doc.originalFilename})`,
         metadata: { extractedFields: doc.extractedFields },
       });
     }
 
-    res.status(201).json({ bidSubmission, sellerProfile, documents: savedDocuments });
+    res.status(201).json({ bidSubmission, documents: savedDocuments });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }

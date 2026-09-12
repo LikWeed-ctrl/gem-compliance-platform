@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../middleware/upload");
-const { uploadDocument, extractPreview } = require("../controllers/documentController");
+const { validateFileMagicBytes } = require("../middleware/fileSecurity");
+const { protect } = require("../middleware/authMiddleware");
+const { uploadDocument, extractPreview, downloadDocument } = require("../controllers/documentController");
 
-router.post("/", upload.single("document"), uploadDocument);
-router.post("/extract-preview", upload.single("document"), extractPreview);
+router.post("/", protect, upload.single("document"), validateFileMagicBytes, uploadDocument);
+router.post("/extract-preview", protect, upload.single("document"), validateFileMagicBytes, extractPreview);
+router.get("/:id/download", protect, downloadDocument);
 
 module.exports = router;

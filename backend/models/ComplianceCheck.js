@@ -37,7 +37,7 @@ const complianceCheckSchema = new mongoose.Schema(
 
     result: {
       type: String,
-      enum: ["PASS", "FAIL", "WARNING", "NOT_APPLICABLE", "COULD_NOT_VERIFY"],
+      enum: ["PASS", "FAIL", "WARNING", "NOT_APPLICABLE", "COULD_NOT_VERIFY", "REVIEW"],
       required: true,
     },
 

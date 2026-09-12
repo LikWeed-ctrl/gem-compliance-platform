@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const documentRequirementSchema = new mongoose.Schema({
+  documentType: { type: String, required: true },
+  requirements: { type: mongoose.Schema.Types.Mixed, default: [] },
+  extractionSchema: { type: mongoose.Schema.Types.Mixed, default: null }
+}, { _id: false });
+
 const tenderSchema = new mongoose.Schema(
   {
     tenderId: { type: String, required: true, unique: true }, // e.g. GEM/2026/B/12345
@@ -19,6 +25,7 @@ const tenderSchema = new mongoose.Schema(
       pastPerformanceMinValueLakhs: { type: Number, default: null },
     },
     requiredDocuments: { type: [String], default: [] },
+    documentRequirements: { type: [documentRequirementSchema], default: [] }, // Structured requirements array
 
     publishedDate: { type: Date, default: Date.now },
     bidSubmissionDeadline: { type: Date, required: true },

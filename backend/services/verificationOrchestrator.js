@@ -10,6 +10,15 @@ const { verifyESIC } = require("../mock_services/esicService");
 const { verifyMCA21 } = require("../mock_services/mca21Service");
 const { checkBlacklist } = require("../mock_services/blacklistService");
 
+const Tender = require("../models/Tender");
+const Document = require("../models/Document");
+const { runDeterministicRules } = require("./ruleEngine");
+const { runSemanticRules } = require("./aiSemanticService");
+const { runCrossDocumentVerification } = require("./crossDocumentEngine");
+const { verifyDocumentOwnership } = require("./entityIdentityService");
+const { verifyInternalConsistency } = require("./internalDocumentConsistencyService");
+const { buildRequirementMatrix, evaluateRequirementCoverage } = require("./tenderRequirementCoverageService");
+
 const REAL_ANCHORED_GSTINS = new Set([
   "27AAJCM9929L1ZM", // Madrecha Solutions
   "27AABCN0379D1ZO", // Nissin ABC Logistics
@@ -101,6 +110,12 @@ function buildDetailText(category, result, isReverification = false, lastVerifie
  * Runs registration-level checks against the SellerProfile.
  */
 async function runRegistrationChecks(sellerProfile, isReverification = false) {
+  // Delete old registration checks for this seller to avoid duplicates on re-runs
+  await ComplianceCheck.deleteMany({
+      sellerProfile: sellerProfile._id,
+      category: { $ne: "TENDER_SPECIFIC" }
+  });
+
   const plan = buildCheckPlan(sellerProfile);
   const savedChecks = {};
 
@@ -224,7 +239,8 @@ async function runRegistrationChecks(sellerProfile, isReverification = false) {
 }
 
 /**
- * Orchestrates checking for a full Bid Submission, including re-verifying the seller profile.
+ * Orchestrates checking for a full Bid Submission, including re-verifying the seller profile
+ * and running the Advanced Tender Document Verification pipeline.
  */
 async function runBidSubmissionChecks(bidSubmission, sellerProfile) {
   // Re-verify the seller profile (Registration Checks)
@@ -234,8 +250,6 @@ async function runBidSubmissionChecks(bidSubmission, sellerProfile) {
   // Drift Detection
   let driftDetected = false;
   if (isReverification) {
-    // In a real app we'd compare against previous saved checks.
-    // Here we'll just check if any registration check currently FAILED.
     driftDetected = registrationChecks.some(c => c.result === 'FAIL' && c.category !== 'BLACKLIST_DEBARMENT');
   }
 
@@ -245,21 +259,182 @@ async function runBidSubmissionChecks(bidSubmission, sellerProfile) {
      await sellerProfile.save();
   }
 
-  // For Tender-specific checks, we would normally fetch `Document` models
-  // associated with this `bidSubmission` and run compliance against tender rules.
-  // We'll leave a placeholder here to represent that logic.
-  const tenderSpecificCheck = await ComplianceCheck.create({
-    sellerProfile: sellerProfile._id,
-    bidSubmission: bidSubmission._id,
-    category: "TENDER_SPECIFIC",
-    result: "PASS", // This would be evaluated by ruleEngine based on Document extraction vs Tender eligibility rules
-    sourceType: "DOCUMENT_OCR",
-    sourceName: "LLM Extraction",
-    detail: "Tender-specific documents were evaluated against tender rules.",
-    weight: 2.0,
+  const allChecks = [...registrationChecks];
+
+  // Delete old tender-specific checks to avoid duplication
+  await ComplianceCheck.deleteMany({
+      bidSubmission: bidSubmission._id,
+      category: "TENDER_SPECIFIC"
   });
 
-  return [...registrationChecks, tenderSpecificCheck];
+  // Fetch Tender to get requirements
+  const tender = await Tender.findOne({ _id: bidSubmission.tender });
+  if (!tender) return allChecks; // No tender found, return early
+
+  // Fetch all tender-specific documents for this bid
+  const documents = await Document.find({
+    bidSubmission: bidSubmission._id,
+    documentCategory: "TENDER_SPECIFIC"
+  });
+
+  // Missing documents handled by Tender Requirement Coverage layer.
+
+  
+    // Build requirement matrix
+    const requirementMatrix = buildRequirementMatrix(tender);
+    const allDeterministicResults = [];
+    const allSemanticResults = [];
+
+    const tenderContext = {
+      tenderNumber: tender.tenderId,
+      workDescription: tender.title,
+      requiredProduct: tender.title // Can be extracted from rules later
+  };
+
+  // Run Layer B and Layer C on each document
+  for (const doc of documents) {
+      // Find requirements for this specific doc type
+      // Requirements should be structured like { "documentType": "...", "requirements": [...] }
+      const docRulesObj = (tender.documentRequirements || []).find(r => r.documentType === doc.docType) || { requirements: [] };
+      let requirements = docRulesObj.requirements ? JSON.parse(JSON.stringify(docRulesObj.requirements)) : [];
+
+      // DYNAMICALLY OVERRIDE HARDCODED VALUES WITH TENDER ELIGIBILITY RULES
+      if (doc.docType === "EXPERIENCE_CRITERIA") {
+          // Changed from MIN_COMPLETED_VALUE to MIN_DURATION_YEARS per Task 6
+          let req = requirements.find(r => r.rule === "MIN_COMPLETED_VALUE" || r.rule === "MIN_DURATION_YEARS");
+          if (!req) { req = { rule: "MIN_DURATION_YEARS" }; requirements.push(req); }
+          req.startField = "commencementDate";
+          req.endField = "actualCompletionDate";
+          req.value = tender.eligibilityRules.minExperienceYears;
+      } else if (doc.docType === "PAST_PERFORMANCE") {
+          let req = requirements.find(r => r.rule === "MIN_VALUE");
+          if (!req) { req = { rule: "MIN_VALUE" }; requirements.push(req); }
+          req.targetField = "totalOrderValue";
+          req.value = tender.eligibilityRules.pastPerformanceMinValueLakhs;
+      } else if (doc.docType === "MII_CERTIFICATE" || doc.docType === "MII_DECLARATION") {
+          let req = requirements.find(r => r.rule === "MIN_PERCENT");
+          if (!req) { req = { rule: "MIN_PERCENT" }; requirements.push(req); }
+          req.targetField = "localContentPercent";
+          req.value = tender.eligibilityRules.makeInIndiaMinPercent;
+      } else if (doc.docType === "BIDDER_TURNOVER" || doc.docType === "OEM_ANNUAL_TURNOVER") {
+          let req = requirements.find(r => r.rule === "MIN_VALUE" && r.targetField === "turnoverLakhs");
+          if (!req) { req = { rule: "MIN_VALUE", targetField: "turnoverLakhs" }; requirements.push(req); }
+          req.value = tender.eligibilityRules.minTurnoverLakhs;
+      }
+
+      // Ownership/Identity Check
+      const identityResult = verifyDocumentOwnership(doc, sellerProfile);
+      const identityChecks = identityResult.status !== "NOT_APPLICABLE" ? [identityResult] : [];
+
+      // Internal Consistency Check
+      const internalChecks = verifyInternalConsistency(doc);
+
+      // Layer B: Deterministic Rules
+      const deterministicResults = runDeterministicRules(doc.extractedFields || {}, requirements.filter(r => !r.isSemantic && r.rule !== "SIMILAR_WORK_REQUIRED" && r.rule !== "AUTHORIZATION_SCOPE"));
+      
+      // Layer C: Semantic Rules
+      const semanticResults = await runSemanticRules(doc.rawText || JSON.stringify(doc.extractedFields), requirements, tenderContext);
+
+      
+      // Tag results with documentType so coverage evaluator can find them
+      deterministicResults.forEach(r => r.documentType = doc.docType);
+      semanticResults.forEach(r => r.documentType = doc.docType);
+      
+      allDeterministicResults.push(...deterministicResults);
+      allSemanticResults.push(...semanticResults);
+
+      const combinedResults = [...identityChecks, ...internalChecks, ...deterministicResults, ...semanticResults];
+      
+      // Determine overall document status
+      let overallStatus = "PASS";
+      if (combinedResults.some(r => r.status === "FAIL")) overallStatus = "FAIL";
+      else if (combinedResults.some(r => r.status === "REVIEW" || r.status === "NOT_FOUND")) overallStatus = "REVIEW";
+      else if (combinedResults.length === 0) overallStatus = "PASS"; // If no specific rules, but it was extracted
+
+      // Update Document with detailed JSON
+      doc.verificationStatus = overallStatus;
+      doc.verificationResult = {
+          overallStatus,
+          checks: combinedResults
+      };
+      await doc.save();
+
+      // Create a ComplianceCheck summary for this document
+      const docCheck = await ComplianceCheck.create({
+        sellerProfile: sellerProfile._id,
+        bidSubmission: bidSubmission._id,
+        category: "TENDER_SPECIFIC",
+        result: overallStatus,
+        sourceType: "DOCUMENT_OCR",
+        sourceName: `Layer B/C: ${doc.docType}`,
+        detail: `Verified ${doc.docType}. Status: ${overallStatus}. Evaluated ${combinedResults.length} rules.`,
+        rawResponse: combinedResults,
+        weight: overallStatus === "FAIL" ? 2.0 : 1.0,
+      });
+      allChecks.push(docCheck);
+  }
+
+  
+    // Layer E: Tender Requirement Coverage Evaluator
+    const evaluatedMatrix = evaluateRequirementCoverage(requirementMatrix, documents, allDeterministicResults, allSemanticResults);
+    
+    // Create a ComplianceCheck for the overall coverage
+    let missingOrFailed = evaluatedMatrix.filter(r => r.status === "FAIL");
+    let reviewReqs = evaluatedMatrix.filter(r => r.status === "REVIEW");
+    
+    let coverageStatus = "PASS";
+    if (missingOrFailed.length > 0) coverageStatus = "FAIL";
+    else if (reviewReqs.length > 0) coverageStatus = "REVIEW";
+
+    const passedReqs = evaluatedMatrix.filter(r => r.status === "PASS" || r.status === "NOT_APPLICABLE");
+    const coveragePercent = evaluatedMatrix.length > 0 ? Math.round((passedReqs.length / evaluatedMatrix.length) * 100) : 100;
+
+    const coverageCheck = await ComplianceCheck.create({
+        sellerProfile: sellerProfile._id,
+        bidSubmission: bidSubmission._id,
+        category: "TENDER_SPECIFIC",
+        result: coverageStatus,
+        sourceType: "SIMULATED",
+        sourceName: "Tender Requirement Coverage",
+        detail: `Coverage: ${coveragePercent}%. Evaluated ${evaluatedMatrix.length} configured requirements.`,
+        rawResponse: evaluatedMatrix,
+        weight: coverageStatus === "FAIL" ? 3.0 : 1.0,
+    });
+    allChecks.push(coverageCheck);
+
+    // Layer D: Cross-Document Verification
+  const crossDocResults = runCrossDocumentVerification(documents);
+  let crossDocOverallStatus = "PASS";
+  if (crossDocResults.some(r => r.status === "FAIL")) crossDocOverallStatus = "FAIL";
+  else if (crossDocResults.some(r => r.status === "REVIEW")) crossDocOverallStatus = "REVIEW";
+
+  if (crossDocResults.length > 0) {
+      const crossDocCheck = await ComplianceCheck.create({
+        sellerProfile: sellerProfile._id,
+        bidSubmission: bidSubmission._id,
+        category: "TENDER_SPECIFIC",
+        result: crossDocOverallStatus,
+        sourceType: "SIMULATED", // Using rules
+        sourceName: "Cross-Document Engine",
+        detail: `Cross-Document Check: ${crossDocOverallStatus}. Flagged ${crossDocResults.filter(r=>r.status!=='PASS').length} inconsistencies.`,
+        rawResponse: crossDocResults, // Store detailed JSON in rawResponse
+        weight: crossDocOverallStatus === "FAIL" ? 2.0 : 1.0,
+      });
+      allChecks.push(crossDocCheck);
+  }
+
+  // Final Officer Summary Log
+  await AuditLog.create({
+    sellerProfile: sellerProfile._id,
+    bidSubmission: bidSubmission._id,
+    tender: tender._id,
+    actionType: "COMPLIANCE_CHECK_RUN",
+    actor: "system",
+    actorRole: "SYSTEM",
+    description: `Ran Advanced Tender Verification (Layers A/B/C/D) on ${documents.length} documents.`,
+  });
+
+  return allChecks;
 }
 
 module.exports = { runRegistrationChecks, runBidSubmissionChecks };

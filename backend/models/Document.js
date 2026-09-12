@@ -29,6 +29,7 @@ const documentSchema = new mongoose.Schema(
         "EXPERIENCE_CRITERIA", "PAST_PERFORMANCE", "BIDDER_TURNOVER",
         "OEM_AUTHORIZATION_CERTIFICATE", "OEM_ANNUAL_TURNOVER",
         "MII_CERTIFICATE", "EMD_EXEMPTION_SUPPORTING_DOC", "ATC_ADDITIONAL_DOC",
+        "WORK_ORDER", "OTHER", "UNKNOWN"
       ],
       required: true,
     },
@@ -46,9 +47,11 @@ const documentSchema = new mongoose.Schema(
 
     verificationStatus: {
       type: String,
-      enum: ["PENDING", "VERIFIED", "MISMATCH", "UNREADABLE"],
+      enum: ["PENDING", "VERIFIED", "MISMATCH", "UNREADABLE", "PASS", "FAIL", "REVIEW", "NOT_APPLICABLE", "NOT_FOUND"],
       default: "PENDING",
     },
+    
+    verificationResult: { type: mongoose.Schema.Types.Mixed, default: null }, // Stores the detailed JSON output from verification
   },
   { timestamps: true }
 );

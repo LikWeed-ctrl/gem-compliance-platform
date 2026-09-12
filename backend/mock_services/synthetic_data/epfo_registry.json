@@ -1,0 +1,10 @@
+{
+  "MH/12345/001": { "employerName": "Bharat Engineering Works Pvt Ltd", "status": "Active - Contributions Current" },
+  "KA/54321/002": { "employerName": "Suvidha Infratech Private Limited", "status": "Active - Contributions Current" },
+  "DL/67890/003": { "employerName": "Global Manufacturing Solutions Pvt Ltd", "status": "Active - Contributions Current" },
+  "MH/33445/005": { "employerName": "Precision Tools & Dies Pvt Ltd", "status": "Active - Contributions Current" },
+  "TN/22334/006": { "employerName": "Sundaram Electricals Traders", "status": "Active - Contributions Current" },
+  "KA/44556/007": { "employerName": "TechnoServe Systems Ltd", "status": "Active - Contributions Current" },
+  "GJ/55667/008": { "employerName": "Ganesh Constructions", "status": "Active - Contributions Current" },
+  "HR/77889/010": { "employerName": "Zenith Software Solutions", "status": "Active - Contributions Current" }
+}

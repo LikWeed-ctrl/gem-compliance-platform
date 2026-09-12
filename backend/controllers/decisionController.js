@@ -5,7 +5,8 @@ const VALID_DECISIONS = ["QUALIFIED", "DISQUALIFIED", "CLARIFICATION_REQUESTED"]
 
 async function recordOfficerDecision(req, res) {
   try {
-    const { decision, reason, officerId } = req.body;
+    const { decision, reason } = req.body;
+    const officerId = req.user._id.toString();
 
     if (!VALID_DECISIONS.includes(decision)) {
       return res.status(400).json({
@@ -15,13 +16,7 @@ async function recordOfficerDecision(req, res) {
 
     if (!reason || reason.trim().length < 10) {
       return res.status(400).json({
-        error: "A reason (minimum 10 characters) is required for every officer decision — this is mandatory for audit accountability.",
-      });
-    }
-
-    if (!officerId || officerId.trim().length === 0) {
-      return res.status(400).json({
-        error: "officerId is required — every decision must be attributable to a specific officer.",
+        error: "A reason (minimum 10 characters) is required for every officer decision - this is mandatory for audit accountability.",
       });
     }
 

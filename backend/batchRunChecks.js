@@ -6,7 +6,6 @@ const BidSubmission = require("./models/BidSubmission");
 const SellerProfile = require("./models/SellerProfile");
 const Tender = require("./models/Tender");
 const { runBidSubmissionChecks } = require("./services/verificationOrchestrator");
-const { runTenderSpecificRules } = require("./services/ruleEngine");
 const { calculateComplianceScore } = require("./services/scoringEngine");
 const { generateRecommendation } = require("./services/recommendationEngine");
 
@@ -22,7 +21,6 @@ async function batchRun() {
       const profile = bid.sellerProfile;
       
       await runBidSubmissionChecks(bid, profile);
-      await runTenderSpecificRules(bid._id, bid, tender);
       const { finalScore, riskLevel } = await calculateComplianceScore(bid._id);
       await generateRecommendation(bid._id);
       console.log(`  ✓ ${profile.companyName} — Score: ${finalScore}, Risk: ${riskLevel}`);

@@ -1,0 +1,139 @@
+Created At: 2026-09-11T22:31:22+05:30
+Completed At: 2026-09-11T22:31:23+05:30
+
+The command exited with code 0.
+Output:
+<truncated 184 lines>
+- Calculation & Declarations: Extract the explicit calculation methodology into calculationBasis. Extract the exact declaration statement into declarationText.
+- Locations & Certification: Extract "Manufacturing facility", "Place of value addition" -> valueAdditionLocation. Extract certification details ONLY if explicitly stated.
+- Identity: Map "Bidder", "Supplier" -> bidderName. Do NOT confuse with OEM if they are distinct.
+- Product Details: Map general items -> product, specific part numbers -> model. Do not invent a model.`;
+      } else if (docType === "WORK_ORDER") {
+        semanticInstructions += `
+- Identity: "Purchaser", "Client", "Procuring Entity", "Buyer" -> purchaserOrganization. "Supplier", "Vendor", "Contractor", "Awarded To", "Agency" -> supplierName. Do NOT confuse them. Do not assume the first company mentioned is the purchaser.
+- Addresses & Locations: Map purchaser address to purchaserAddress, supplier address to supplierAddress. Do not mix them. "Ship To", "Consignee Address", "Place of Delivery" -> deliveryLocation. Do not confuse deliveryLocation with purchaserAddress unless explicitly identical.
+- Order Numbers: "Work Order No.", "WO No." -> workOrderNumber. "Purchase Order No.", "PO No." -> purchaseOrderNumber. Do NOT put the same number in both fields unless the document explicitly equates them. Leave absent fields as null.
+- Dates: "Order Date", "PO Date", "Date of Award" -> orderDate. Do NOT confuse with delivery date, invoice date, or inspection date.
+- Financials & Quantities: Map "Unit Price", "Rate per Unit" -> unitPrice. Map "Total Order Value", "PO Value", "Total Amount" -> totalOrderValue. Do NOT put the total value into unitPrice. Extract values as pure numbers (e.g. 25000). Extract ordered quantity into quantity.
+- Deliverables: "Item", "Goods" -> product. "Model", "Part Number" -> model. "Specifications", "Technical description" -> description. If multiple line items exist, extract the primary/relevant information based on the schema's constraints without inventing arrays if unsupported.
+- Commitments: Extract warranty, installation, and commissioning explicitly. Do not assume one implies the others. Extract expected delivery timing into deliverySchedule (do not invent specific dates if a duration is given).
+- Signatory: "Authorized Signatory", "Issuing Authority" -> issuingOfficer. Extract contact details explicitly.`;
+      } else if (docType === "BIDDER_TURNOVER" || docType === "OEM_ANNUAL_TURNOVER") {
+        semanticInstructions += `
+- Identity: Extract the entity whose turnover is being certified into bidderName (or OEM name if explicitly OEM turnover). Distinguish this from the CA/accounting firm issuing the certificate (issuerFirmName, caName).
+- Terminology: "Annual Turnover", "Gross Turnover", "Net Turnover", "Sales Turnover", "Revenue from Operations" -> turnoverAmount. Do NOT confuse turnover with profit, net worth, paid-up capital, assets, or taxable/GST turnover when clearly different.
+- Normalization: Extract the raw amount into turnoverAmount. Extract the unit (e.g. Lakhs, Crores, Millions) into turnoverUnit. Extract the currency (e.g. INR, USD) into turnoverCurrency. CRITICAL: Calculate turnoverLakhs numerically if explicitly stated (e.g., 65 lakh -> 65, 6.5 crore -> 650, 65,00,000 -> 65). Do not guess conversion if ambiguous.
+- Financial Year vs Date: Extract the specific financial year (e.g., "2023-24") into financialYear. Do NOT confuse this with the certificate issue date (certificateDate). If multiple years are present, extract the primary/requested year.
+- Distinctions: Do not confuse the "turnover requirement" stated in the certificate with the actual achieved turnover.
+- Issuer Details: Extract CA name, issuerFirmName, caMembershipNumber, and udin ONLY if explicitly present. Do NOT invent them.
+- Missing Values: If a value or year cannot be determined confidently, return null. Do NOT guess.`;
+      }
+
+      promptInstruction = `You are a precision OCR-Extraction engine. 
+Extract the following specific fields from the provided ${docType} document text.
+
+FIELDS TO EXTRACT:
+${fieldInstructions}
+
+${semanticInstructions}
+
+RULES:
+1. Return ONLY a valid JSON object.
+2. The JSON object must have a "fields" property containing the extracted keys and values.
+3. The JSON object must also have an "evidence" property mapping those same keys to the exact source text/quote from the document where you found the value. Do not invent quotations.
+4. Also include a "confidence" property ("high" or "low") at the root level.
+5. If a value is missing or cannot be reliably determined from context, use null for both value and evidence. DO NOT guess, infer, or hallucinate.
+6. Dates MUST use the format: YYYY-MM-DD. If missing, null.
+7. Monetary values MUST be extracted as plain numeric integers without currency symbols or commas (e.g. "�,165,00,000" becomes 6500000). Do not interpret ambiguous values.
+8. Quantity should only be extracted if the document clearly specifies the quantity associated with the certified work.`;
+
+    } else {
+      // BACKWARD COMPATIBILITY MODE (FALLBACK)
+      let schemaStr = JSON.stringify(DOCUMENT_SCHEMAS[docType] || { "fields": "any" });
+      promptInstruction = `Extract the exact structured fields for a ${docType}. 
+Return a JSON object with a "fields" property matching this schema: ${schemaStr}.
+Also include an "evidence" property mapping fields to exact quotes from the text.
+Also include a "confidence" property ("high" or "low"). If a value is not found, use null.
+Extract dates as YYYY-MM-DD. Extract monetary values as plain integers (e.g., 5000000 for 50 Lakhs).`;
+    }
+
+    const completion = await groq.chat.completions.create({
+      messages: [
+        {
+          role: "system",
+          content: promptInstruction
+        },
+        {
+          role: "user",
+          content: text
+        }
+      ],
+      model: "qwen/qwen3.8-27b",
+      max_tokens: 2000,
+      response_format: { type: "json_object" }
+    });
+
+    const responseContent = completion.choices[0].message.content;
+    const parsed = JSON.parse(responseContent);
+
+    const mergedFields = { ...(parsed.fields || parsed || {}) };
+    if (parsed.evidence) {
+      for (const [key, val] of Object.entries(parsed.evidence)) {
+        mergedFields[`${key}_evidence`] = val;
+      }
+    }
+
+    return {
+      extractedFields: mergedFields,
+      llmConfidence: parsed.confidence || "high",
+    };
+  } catch (error) {
+    console.error("LLM Extraction failed:", error);
+    return {
+      extractedFields: {},
+      llmConfidence: "low",
+      reason_if_low: error.message
+    };
+  }
+}
+
+async function processDocument(filePath, docType, documentCategory, tenderDocRequirement = null) {
+  try {
+    const { text, confidence, method } = await extractRawText(filePath);
+    
+    let extractedFields = {};
+    let verificationStatus = "PENDING"; // Start as pending, verified later by rules
+
+    if (documentCategory === "TENDER_SPECIFIC") {
+      const llmResult = await extractWithLLM(text, docType, tenderDocRequirement);
+      extractedFields = llmResult.extractedFields;
+      // We no longer set status to VERIFIED here. Layer A just extracts.
+      verificationStatus = "PENDING";
+      if (llmResult.llmConfidence === "low" && Object.keys(extractedFields).length === 0) {
+          verificationStatus = "UNREADABLE";
+      }
+    } else {
+      extractedFields = extractFieldsFromText(text, docType);
+      const hasExpectedField = Object.keys(extractedFields).length > 0;
+      verificationStatus = hasExpectedField ? "VERIFIED" : "UNREADABLE";
+    }
+
+    return {
+      extractedFields,
+      ocrConfidence: confidence,
+      verificationStatus,
+      extractionMethod: method,
+      rawText: text, // Keep raw text for Layer C (semantic rules)
+    };
+  } catch (err) {
+    return {
+      extractedFields: {},
+      ocrConfidence: 0,
+      verificationStatus: "UNREADABLE",
+      error: err.message,
+    };
+  }
+}
+
+module.exports = { processDocument };
+
