@@ -30,3 +30,5 @@ export const extractDocumentPreview = (formData) =>
 
 export const createBidderWithDocuments = (payload) =>
   api.post("/bidders/with-documents", payload).then((res) => res.data);
+
+export const getDocumentBlob = (id) => api.get(/documents//download, { responseType: 'blob' }).then(res => res.data);

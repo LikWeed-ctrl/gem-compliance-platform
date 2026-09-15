@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>E-Procure Verify | Documents Verification &amp; Provenance Inspection</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#f7f9fb",
+            "primary-fixed": "#d6e3ff",
+            "secondary-fixed-dim": "#b9c7e0",
+            "on-primary-fixed-variant": "#394761",
+            "tertiary-fixed-dim": "#b7c4ff",
+            "surface-container-high": "#e6e8ea",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#44474d",
+            "on-background": "#191c1e",
+            "on-error": "#ffffff",
+            "inverse-primary": "#b8c7e6",
+            "primary-fixed-dim": "#b8c7e6",
+            "error-container": "#ffdad6",
+            "primary-container": "#14233b",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-fixed": "#001551",
+            "outline": "#75777e",
+            "error": "#ba1a1a",
+            "surface-bright": "#f7f9fb",
+            "on-surface": "#191c1e",
+            "on-secondary-fixed-variant": "#3a485c",
+            "inverse-surface": "#2d3133",
+            "on-secondary-fixed": "#0d1c2f",
+            "surface-tint": "#505f7a",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#f7f9fb",
+            "primary": "#000d23",
+            "surface-container-low": "#f2f4f6",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e0e3e5",
+            "secondary-fixed": "#d5e3fd",
+            "outline-variant": "#c5c6ce",
+            "on-error-container": "#93000a",
+            "surface-container": "#eceef0",
+            "secondary": "#515f74",
+            "secondary-container": "#d5e3fd",
+            "on-primary-container": "#7c8ba7",
+            "on-tertiary": "#ffffff",
+            "tertiary-container": "#001b62",
+            "on-secondary-container": "#57657b",
+            "on-tertiary-fixed-variant": "#0039b5",
+            "tertiary": "#000930",
+            "tertiary-fixed": "#dce1ff",
+            "on-tertiary-container": "#5f81ff",
+            "on-primary-fixed": "#0c1c33",
+            "surface-dim": "#d8dadc",
+            "inverse-on-surface": "#eff1f3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "2rem"
+          },
+          "fontFamily": {
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "code-tabular": ["JetBrains Mono"],
+            "display-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "code-tabular-sm": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "title-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code-tabular": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "code-tabular-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-sm": ["15px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="bg-surface-container-lowest border-b border-outline-variant transition-colors duration-150 ease-in-out sticky top-0 z-40">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between h-14">
+<!-- Brand & Search cluster -->
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 bg-primary-container text-white flex items-center justify-center rounded font-headline-md text-headline-md font-bold">
+<span class="material-symbols-outlined text-[20px]" data-icon="assured_workload">assured_workload</span>
+</div>
+<div class="leading-none">
+<span class="font-title-sm text-title-sm font-semibold tracking-tight text-primary">E-Procure Verify</span>
+<span class="block text-[10px] text-secondary tracking-wider uppercase font-semibold">National Public Procurement Portal</span>
+</div>
+</div>
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-secondary text-[18px]" data-icon="search">search</span>
+<input class="w-full h-8 pl-8 pr-3 text-body-md font-body-md bg-surface-container-low border border-outline-variant rounded focus:outline-none focus:border-primary focus:bg-surface-container-lowest transition-all" placeholder="Search document hash, UDIN, tender..." type="text"/>
+</div>
+</div>
+<!-- Navigation Tabs (Documents is explicitly active) -->
+<nav class="flex items-center space-x-8 h-full pt-4">
+<a class="text-secondary hover:text-primary font-normal pb-3 transition-colors duration-150 ease-in-out font-label-md text-label-md" href="#">Overview</a>
+<a class="text-secondary hover:text-primary font-normal pb-3 transition-colors duration-150 ease-in-out font-label-md text-label-md" href="#">Detailed Analysis</a>
+<a class="border-b-2 border-primary-container text-primary font-semibold pb-3 font-label-md text-label-md" href="#">Documents</a>
+</nav>
+<!-- Action & Profile Cluster -->
+<div class="flex items-center space-x-3">
+<button class="h-8 px-3 rounded bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_back">arrow_back</span>
+<span>Back to All Bids</span>
+</button>
+<button class="h-8 px-3 rounded bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low text-secondary hover:text-on-surface font-label-md text-label-md transition-colors flex items-center space-x-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="file_download">file_download</span>
+<span>Export Audit Dossier</span>
+</button>
+<button class="h-8 px-3.5 rounded bg-primary-container text-white hover:bg-primary font-label-md text-label-md transition-colors flex items-center space-x-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="gavel">gavel</span>
+<span>Record Officer Decision</span>
+</button>
+<div class="h-5 w-[1px] bg-outline-variant mx-1"></div>
+<div class="flex items-center space-x-1 text-secondary">
+<button class="p-1.5 hover:bg-surface-container-low rounded text-secondary hover:text-on-surface" title="Notifications">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+<button class="p-1.5 hover:bg-surface-container-low rounded text-secondary hover:text-on-surface" title="Help">
+<span class="material-symbols-outlined text-[20px]" data-icon="help">help</span>
+</button>
+<div class="flex items-center pl-1 space-x-2">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-primary font-title-sm text-title-sm border border-outline-variant" title="Procurement Evaluation Officer avatar">
+<span class="material-symbols-outlined text-[20px]" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- PERSISTENT BIDDER STATUS RIBBON -->
+<section class="bg-surface-container-lowest border-b border-outline-variant">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop py-2.5 flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<div class="w-2.5 h-2.5 rounded-full bg-amber-500 ring-4 ring-amber-100"></div>
+<span class="font-title-sm text-title-sm font-semibold text-primary">Bharat Infra Services Ltd.</span>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center space-x-1">
+<span class="text-secondary font-label-md text-label-md">Tender ID:</span>
+<span class="font-code-tabular text-code-tabular text-on-surface font-semibold">GEM/2026/B/8912041</span>
+</div>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center space-x-1">
+<span class="text-secondary font-label-md text-label-md">GSTIN:</span>
+<span class="font-code-tabular text-code-tabular text-on-surface font-semibold bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant">07AAACB1234F1Z5</span>
+</div>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center space-x-1.5">
+<span class="text-secondary font-label-md text-label-md">Compliance Score:</span>
+<span class="font-code-tabular text-code-tabular text-amber-800 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded font-bold">84/100 (Review Required)</span>
+</div>
+</div>
+<div class="flex items-center space-x-2 text-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="visibility">visibility</span>
+<span>Inspecting:</span>
+<span class="font-semibold text-primary bg-primary-fixed px-2 py-0.5 rounded border border-primary-fixed-dim">Doc #2: Experience Certificate</span>
+</div>
+</div>
+</section>
+<!-- TWO-PANE WORKSPACE CONTAINER -->
+<main class="flex-1 w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop py-space-md flex gap-gutter-desktop">
+<!-- LEFT PANE: SUBMITTED DOCUMENTS LIST (35% Width) -->
+<aside class="w-[35%] flex flex-col bg-surface-container-lowest border border-outline-variant rounded">
+<!-- List Header & Filter Tabs -->
+<div class="p-3.5 border-b border-outline-variant bg-surface-container-low">
+<div class="flex items-center justify-between mb-2.5">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="folder_managed">folder_managed</span>
+<h2 class="font-title-sm text-title-sm text-primary font-semibold">Submitted Documents (7 Files)</h2>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary bg-surface-container-lowest border border-outline-variant px-2 py-0.5 rounded">Tier 1 Verification</span>
+</div>
+<!-- Filter Pills -->
+<div class="flex space-x-1.5">
+<button class="px-2.5 py-1 text-label-md font-label-md rounded bg-surface-container-highest text-primary font-medium hover:bg-surface-container-high transition-colors">All (7)</button>
+<button class="px-2.5 py-1 text-label-md font-label-md rounded bg-amber-50 text-amber-900 border border-amber-300 font-semibold flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span>
+<span>Requires Review (2)</span>
+</button>
+<button class="px-2.5 py-1 text-label-md font-label-md rounded bg-surface-container-lowest text-secondary border border-outline-variant hover:text-primary transition-colors">Passed (5)</button>
+</div>
+</div>
+<!-- Scrollable File Item Cards -->
+<div class="flex-1 overflow-y-auto divide-y divide-outline-variant max-h-[calc(100vh-210px)]">
+<!-- CARD 1: Selected / Active (Experience Certificate) -->
+<div class="p-3 bg-white border-l-4 border-l-primary-container shadow-sm relative cursor-pointer">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-01</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">EXPERIENCE CERTIFICATE</h3>
+</div>
+<!-- REVIEW REQUIRED BADGE -->
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#FEF8EC] border border-[#FCD34D] text-[#B7791F] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="warning">warning</span>
+<span>REVIEW REQUIRED</span>
+</span>
+</div>
+<p class="mt-1 text-amber-800 font-label-md text-label-md font-medium">Completion date missing in certificate body</p>
+<div class="mt-2 flex items-center space-x-2 text-[11px] font-code-tabular-sm text-secondary bg-surface-container-low px-2 py-1 rounded border border-outline-variant/60">
+<span class="material-symbols-outlined text-[14px] text-secondary" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="font-medium text-on-surface truncate max-w-[190px]">Exp_Cert_CPWD_2024.pdf</span>
+<span>•</span>
+<span>1.4 MB</span>
+<span>•</span>
+<span>2 Pages</span>
+</div>
+<!-- Micro-checks -->
+<div class="mt-2 pt-2 border-t border-outline-variant/40 grid grid-cols-1 gap-1 text-[11px] font-code-tabular-sm">
+<div class="flex items-center text-emerald-700">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Document Valid (Digital Seal Intact)</span>
+</div>
+<div class="flex items-center text-emerald-700">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Signatory Verified (EE CPWD Div-IV)</span>
+</div>
+<div class="flex items-center text-amber-700 font-semibold">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="warning">warning</span>
+<span>Completion Date Unstated (Clause 4.1 Breach)</span>
+</div>
+</div>
+<div class="mt-2.5 flex justify-end">
+<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-primary-container text-white text-[11px] font-label-md tracking-wider">
+<span>ACTIVE INSPECTION</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+</span>
+</div>
+</div>
+<!-- CARD 2: MII Local Content Declaration -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-amber-500">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-02</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">MII LOCAL CONTENT DECLARATION</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#FEF8EC] border border-[#FCD34D] text-[#B7791F] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="warning">warning</span>
+<span>REVIEW REQUIRED</span>
+</span>
+</div>
+<p class="mt-1 text-amber-800 font-label-md text-label-md font-medium">Model suffix alignment against OEM doc</p>
+<div class="mt-1.5 flex items-center space-x-2 text-[11px] font-code-tabular-sm text-secondary">
+<span class="material-symbols-outlined text-[14px]" data-icon="description">description</span>
+<span class="truncate">MII_Affidavit_Form_2.pdf (820 KB) • 1 Page</span>
+</div>
+<div class="mt-2 text-[11px] font-code-tabular-sm space-y-0.5">
+<div class="text-emerald-700 flex items-center">
+<span class="material-symbols-outlined text-[13px] mr-1" data-icon="check">check</span>
+<span>Minimum 50% Met (Self: 62%)</span>
+</div>
+<div class="text-amber-700 flex items-center font-semibold">
+<span class="material-symbols-outlined text-[13px] mr-1" data-icon="warning">warning</span>
+<span>Model Suffix Divergence: X-500-Pro</span>
+</div>
+</div>
+</div>
+<!-- CARD 3: Work Order (CPWD) -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-emerald-600">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-03</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">WORK ORDER (CPWD)</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>PASS</span>
+</span>
+</div>
+<p class="mt-1 text-secondary font-label-md text-label-md">WO-2024-0192 • ₹1.42 Cr contract value verified</p>
+<div class="mt-1 flex items-center space-x-2 text-[11px] font-code-tabular-sm text-secondary">
+<span class="truncate">WorkOrder_CPWD_882.pdf (2.1 MB) • 4 Pages</span>
+</div>
+</div>
+<!-- CARD 4: OEM Authorization Letter (Cisco) -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-emerald-600">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-04</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">OEM AUTHORIZATION LETTER (CISCO)</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>PASS</span>
+</span>
+</div>
+<p class="mt-1 text-secondary font-label-md text-label-md">Authorization Code CIS-2026-IN-9812 valid</p>
+<div class="mt-1 text-[11px] font-code-tabular-sm text-secondary truncate">
+            OEM_Auth_Cisco_India.pdf (1.1 MB) • 2 Pages
+          </div>
+</div>
+<!-- CARD 5: CA Turnover Certificate -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-emerald-600">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-05</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">CA TURNOVER CERTIFICATE</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>PASS</span>
+</span>
+</div>
+<p class="mt-1 text-secondary font-label-md text-label-md">UDIN 24098214BCDE • ₹250 Lakh 3-yr avg</p>
+<div class="mt-1 text-[11px] font-code-tabular-sm text-secondary truncate">
+            CA_Turnover_Cert_FY24.pdf (940 KB) • 3 Pages
+          </div>
+</div>
+<!-- CARD 6: GST Registration & Latest 3B -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-emerald-600">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-06</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">GST REGISTRATION &amp; LATEST 3B</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>PASS</span>
+</span>
+</div>
+<p class="mt-1 text-secondary font-label-md text-label-md">Active regular registration 07AAACB1234F1Z5</p>
+<div class="mt-1 text-[11px] font-code-tabular-sm text-secondary truncate">
+            GST_Reg_07AAACB.pdf (650 KB) • 1 Page
+          </div>
+</div>
+<!-- CARD 7: PAN Card & Board Resolution -->
+<div class="p-3 bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer border-l-4 border-l-emerald-600">
+<div class="flex items-start justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-label-md text-label-md text-secondary font-bold">DOC-07</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">PAN CARD &amp; BOARD RESOLUTION</h3>
+</div>
+<span class="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded text-[11px] font-code-tabular-sm bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>PASS</span>
+</span>
+</div>
+<p class="mt-1 text-secondary font-label-md text-label-md">AAACB1234F verified with MCA director list</p>
+<div class="mt-1 text-[11px] font-code-tabular-sm text-secondary truncate">
+            PAN_BoardRes_BharatInfra.pdf (1.8 MB) • 3 Pages
+          </div>
+</div>
+</div>
+<!-- Sidebar Status Footer -->
+<div class="p-3 bg-surface-container-low border-t border-outline-variant flex items-center justify-between text-[11px] font-code-tabular-sm text-secondary">
+<span>Repository ID: G-NDLS-2026-DOCS-891</span>
+<span class="text-emerald-700 font-semibold flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="verified_user">verified_user</span>
+          Hash Tamper Free
+        </span>
+</div>
+</aside>
+<!-- RIGHT PANE: SECURE DOCUMENT VIEWER & EXTRACTION INSPECTION (65% Width) -->
+<section class="w-[65%] flex flex-col space-y-space-md">
+<!-- VIEWER TOOLBAR CONTAINER -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-2.5 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="description">description</span>
+<span class="font-title-sm text-title-sm font-semibold text-primary">Exp_Cert_CPWD_2024.pdf</span>
+<span class="text-secondary text-label-md font-label-md">— Work Completion &amp; Experience Certificate</span>
+</div>
+<div class="flex items-center space-x-1.5">
+<button class="h-7 px-2.5 rounded bg-surface-container-low hover:bg-surface-container border border-outline-variant text-secondary hover:text-on-surface text-[12px] font-label-md flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="history">history</span>
+<span>Audit Log</span>
+</button>
+<button class="h-7 px-2.5 rounded bg-surface-container-low hover:bg-surface-container border border-outline-variant text-secondary hover:text-on-surface text-[12px] font-label-md flex items-center space-x-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="download">download</span>
+<span>Download Watermarked PDF</span>
+</button>
+</div>
+</div>
+<!-- Security Badge & Canvas Controls -->
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/60">
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center space-x-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-code-tabular-sm text-[11px] border border-outline-variant">
+<span class="material-symbols-outlined text-[13px] text-emerald-600" data-icon="lock">lock</span>
+<span>SECURE REPOSITORY ACCESS</span>
+<span class="text-secondary font-mono">(SHA-256: e3b0c44298fc1c149afbf4c8996fb924...)</span>
+</span>
+</div>
+<!-- Page Navigation & Zooming Controls -->
+<div class="flex items-center space-x-3">
+<div class="flex items-center space-x-1 bg-surface-container-low border border-outline-variant rounded px-1 py-0.5">
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-lowest rounded text-secondary" title="Previous Page">
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<span class="font-code-tabular-sm text-[12px] px-2 text-primary font-semibold">Page 1 of 2</span>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-lowest rounded text-secondary" title="Next Page">
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="flex items-center space-x-1 bg-surface-container-low border border-outline-variant rounded px-1 py-0.5">
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-lowest rounded text-secondary" title="Zoom Out">
+<span class="material-symbols-outlined text-[16px]" data-icon="remove">remove</span>
+</button>
+<span class="font-code-tabular-sm text-[12px] px-2 text-primary font-semibold">100%</span>
+<button class="w-6 h-6 flex items-center justify-center hover:bg-surface-container-lowest rounded text-secondary" title="Zoom In">
+<span class="material-symbols-outlined text-[16px]" data-icon="add">add</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant mx-1"></div>
+<button class="px-1.5 py-0.5 text-[11px] font-label-md text-secondary hover:text-primary rounded hover:bg-surface-container-lowest">Fit Width</button>
+</div>
+</div>
+</div>
+</div>
+<!-- REALISTIC DOCUMENT PREVIEW CANVAS WITH AI BOUNDING BOX -->
+<div class="bg-[#2B303A] p-6 rounded border border-outline-variant overflow-y-auto max-h-[500px] flex justify-center shadow-inner relative">
+<!-- Document Sheet Simulation (A4 Proportion) -->
+<div class="w-[660px] min-h-[780px] bg-white text-slate-900 p-10 shadow-2xl relative border border-slate-300 font-serif leading-relaxed">
+<!-- Government Watermark Stamp Background -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-5">
+<span class="text-[90px] font-bold tracking-widest text-slate-900 rotate-[-30deg] uppercase select-none">GOVT OF INDIA</span>
+</div>
+<!-- Official Header Embellishment -->
+<div class="text-center border-b-2 border-slate-900 pb-4 mb-6">
+<div class="flex justify-center mb-1">
+<!-- Ashoka Emblem Symbol abstraction -->
+<span class="material-symbols-outlined text-[36px] text-slate-800" data-icon="account_balance">account_balance</span>
+</div>
+<h1 class="text-[13px] tracking-wider uppercase font-bold text-slate-900">GOVERNMENT OF INDIA • MINISTRY OF HOUSING &amp; URBAN AFFAIRS</h1>
+<h2 class="text-[15px] font-extrabold uppercase text-slate-950 mt-0.5">OFFICE OF THE EXECUTIVE ENGINEER</h2>
+<p class="text-[12px] font-semibold text-slate-800">CENTRAL PUBLIC WORKS DEPARTMENT, DIVISION-IV, NEW DELHI</p>
+<p class="text-[11px] font-mono text-slate-600 mt-1">Ref No: 44/EE/CD-IV/Tech/2023-24/1109   |   Date: 18/04/2024</p>
+</div>
+<div class="text-center my-4">
+<span class="inline-block px-4 py-1 border-b border-t border-slate-900 font-bold text-[14px] tracking-wide uppercase font-sans">
+              CERTIFICATE OF WORK PERFORMANCE &amp; EXECUTION
+            </span>
+</div>
+<!-- Certificate Body -->
+<div class="text-[13px] text-slate-800 space-y-4 text-justify font-normal leading-6">
+<p>
+              This is to certify that <strong class="font-bold text-slate-950">M/s Bharat Infra Services Ltd.</strong> (Registered Office: Plot 44, Okhla Industrial Area Ph-III, New Delhi, PAN: <span class="font-mono font-bold">AAACB1234F</span>) was awarded the execution of the contract for:
+            </p>
+<div class="bg-slate-50 border border-slate-200 p-3 rounded text-[12px] font-sans">
+<p><strong class="text-slate-900">Name of Work:</strong> Comprehensive Enterprise Campus LAN &amp; Structured Cabling Infrastructure Installation</p>
+<p><strong class="text-slate-900">Agreement No:</strong> 84/EE/CD-IV/2023-24 dated 14/02/2023</p>
+<p><strong class="text-slate-900">Estimated Tender Cost:</strong> ₹1,45,00,000/-</p>
+</div>
+<!-- OCR Bounding Box & Alert Callout Overlay -->
+<div class="relative border-2 border-amber-500 bg-amber-50/40 p-3 rounded transition-all">
+<div class="absolute -top-3 -right-2 bg-amber-600 text-white text-[10px] font-sans font-bold px-2 py-0.5 rounded shadow flex items-center space-x-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="report_problem">report_problem</span>
+<span>AI OCR DISCREPANCY DETECTED</span>
+</div>
+<p class="text-slate-900">
+                The formal work order was issued on 15/02/2023 with stipulated date of commencement recorded as 
+                <span class="bg-amber-200 text-slate-950 font-bold px-1 rounded font-mono">01/03/2023</span>. The gross value of work completed and billed against running and final accounts stands at 
+                <strong class="text-slate-950 font-bold font-mono">₹1,42,80,450/-</strong> (Rupees One Crore Forty-Two Lakh Eighty Thousand Four Hundred Fifty Only).
+              </p>
+<!-- Floating Inspection Popover Callout -->
+<div class="mt-2 bg-white border border-amber-400 p-2 rounded shadow-md text-[11px] font-sans text-amber-900 flex items-start space-x-2">
+<span class="material-symbols-outlined text-amber-600 text-[16px] mt-0.5 shrink-0" data-icon="warning">warning</span>
+<div>
+<strong class="font-semibold block text-amber-950">Discrepancy in Clause Validation:</strong>
+                  Commencement date (01/03/2023) identified; no explicit completion date field found in paragraph 2. Tender clause 3.2.1 mandates explicit certified completion date to score full technical eligibility.
+                </div>
+</div>
+</div>
+<p>
+              The overall performance and workmanship of the agency during the execution timeline was found to be <strong class="font-bold text-slate-950">Satisfactory</strong>. No liquidated damages were levied during the tenure of the agreement.
+            </p>
+</div>
+<!-- Official Stamp and Signature Block -->
+<div class="mt-12 pt-6 flex justify-between items-end border-t border-slate-200 font-sans">
+<div class="text-[11px] text-slate-600">
+<p>Place: New Delhi</p>
+<p>Security QR / Hash: 991823-CD4</p>
+<div class="w-16 h-16 border border-slate-300 mt-2 flex items-center justify-center text-slate-400 font-mono text-[9px]">
+                [QR CODE]
+              </div>
+</div>
+<div class="text-right">
+<div class="text-blue-900 font-serif italic text-[16px] pr-4">R. K. Srivastava</div>
+<div class="w-40 border-b border-slate-900 mb-1 ml-auto"></div>
+<p class="text-[12px] font-bold text-slate-950">Executive Engineer (Civil)</p>
+<p class="text-[11px] text-slate-700">CPWD Division-IV, Sewa Bhawan, New Delhi</p>
+<span class="inline-block mt-1 font-mono text-[10px] text-emerald-700 bg-emerald-50 px-1 border border-emerald-300 rounded font-semibold">
+                ✓ Cryptographic e-Sign Valid (18-04-2024 14:22 IST)
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- COLLAPSIBLE DOCUMENT EXTRACTION & CANONICAL AUDIT PANEL -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<!-- Panel Header -->
+<div class="p-3 bg-surface-container-low border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="data_object">data_object</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">Extracted Canonical Fields</h3>
+<span class="bg-emerald-100 text-emerald-900 text-[11px] font-code-tabular-sm px-2 py-0.5 rounded border border-emerald-300 font-semibold">
+              OCR Confidence: 98.2%
+            </span>
+</div>
+<div class="flex items-center space-x-2">
+<span class="text-[11px] text-secondary font-code-tabular-sm">Engine: BharatOCR v4.2.0-Gov</span>
+<button class="p-1 hover:bg-surface-container rounded text-secondary" title="Collapse Panel">
+<span class="material-symbols-outlined text-[18px]" data-icon="expand_less">expand_less</span>
+</button>
+</div>
+</div>
+<!-- Structured Key-Value Comparison Grid -->
+<div class="p-3.5 space-y-3">
+<div class="grid grid-cols-2 gap-3 text-body-md font-body-md">
+<!-- Issuing Authority -->
+<div class="p-2.5 bg-surface-container-low rounded border border-outline-variant/60">
+<div class="flex justify-between items-start">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Issuing Authority</span>
+<span class="font-code-tabular-sm text-[11px] text-emerald-700 font-semibold">Conf: 99%</span>
+</div>
+<p class="font-semibold text-primary mt-1">Executive Engineer, CPWD Division-IV, New Delhi</p>
+<span class="text-[11px] text-secondary mt-0.5 block">Matched with Public Works Master Directory</span>
+</div>
+<!-- Contractor Name -->
+<div class="p-2.5 bg-surface-container-low rounded border border-outline-variant/60">
+<div class="flex justify-between items-start">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Contractor Name</span>
+<span class="font-code-tabular-sm text-[11px] text-emerald-700 font-semibold">Conf: 100% • MATCHED</span>
+</div>
+<p class="font-semibold text-primary mt-1">Bharat Infra Services Ltd.</p>
+<span class="text-[11px] text-emerald-700 font-medium mt-0.5 block">Exact 1:1 match with GeM Profile PAN</span>
+</div>
+<!-- Agreement / PO Ref -->
+<div class="p-2.5 bg-surface-container-low rounded border border-outline-variant/60">
+<div class="flex justify-between items-start">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Agreement / PO Ref</span>
+<span class="font-code-tabular-sm text-[11px] text-emerald-700 font-semibold">Conf: 98%</span>
+</div>
+<p class="font-code-tabular text-code-tabular font-bold text-primary mt-1">84/EE/CD-IV/2023-24</p>
+<span class="text-[11px] text-secondary mt-0.5 block">Cross-referenced against WO Doc #3</span>
+</div>
+<!-- Gross Executed Value -->
+<div class="p-2.5 bg-surface-container-low rounded border border-outline-variant/60">
+<div class="flex justify-between items-start">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Gross Executed Value</span>
+<span class="font-code-tabular-sm text-[11px] text-emerald-700 font-semibold">Conf: 97% • ARITHMETIC OK</span>
+</div>
+<p class="font-code-tabular text-code-tabular font-bold text-primary mt-1">₹1,42,80,450</p>
+<span class="text-[11px] text-emerald-700 mt-0.5 block font-medium">Exceeds minimum eligibility requirement (₹1.25 Cr)</span>
+</div>
+<!-- Commencement Date -->
+<div class="p-2.5 bg-surface-container-low rounded border border-outline-variant/60">
+<div class="flex justify-between items-start">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-wider">Commencement Date</span>
+<span class="font-code-tabular-sm text-[11px] text-emerald-700 font-semibold">Conf: 99%</span>
+</div>
+<p class="font-code-tabular text-code-tabular font-bold text-primary mt-1">01/03/2023</p>
+<span class="text-[11px] text-secondary mt-0.5 block">Recorded within prior 3 fiscal years window</span>
+</div>
+<!-- Completion Date (TRIGGERED FINDING) -->
+<div class="p-2.5 bg-amber-50 rounded border-2 border-amber-400">
+<div class="flex justify-between items-start">
+<span class="text-amber-900 font-label-md text-label-md font-bold uppercase tracking-wider">Completion Date</span>
+<span class="font-code-tabular-sm text-[11px] text-error font-bold">Conf: 0% • TRIGGERED FINDING</span>
+</div>
+<p class="font-code-tabular text-code-tabular font-bold text-error mt-1">NOT FOUND / UNSTATED</p>
+<span class="text-[11px] text-amber-800 font-semibold mt-0.5 block">Non-compliance with explicit date certificate norm</span>
+</div>
+</div>
+<!-- Officer Verification Override Tool -->
+<div class="mt-3 p-3 bg-surface-container-low border border-outline-variant rounded">
+<div class="flex items-start space-x-2">
+<span class="material-symbols-outlined text-primary text-[18px] mt-0.5" data-icon="edit_note">edit_note</span>
+<div class="flex-1">
+<h4 class="font-label-md text-label-md font-bold text-primary uppercase tracking-wider">Officer Verification Override Protocol</h4>
+<p class="text-secondary text-[12px] mt-0.5">
+                  If manual inspection confirms completion (e.g. from final invoice annexure on Page 2), officer may enter confirmed completion date and sign institutional justification note.
+                </p>
+<div class="mt-2.5 flex items-center space-x-3">
+<div class="flex items-center space-x-1.5">
+<label class="text-[12px] font-label-md text-primary font-medium">Confirmed Date:</label>
+<input class="h-7 w-32 px-2 text-[12px] font-code-tabular bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:border-primary uppercase" placeholder="DD/MM/YYYY" type="text"/>
+</div>
+<div class="flex-1">
+<input class="h-7 w-full px-2.5 text-[12px] font-body-md bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:border-primary" placeholder="Enter verification dossier remarks / Page reference (Mandatory for audit trail)..." type="text"/>
+</div>
+<button class="h-7 px-3 rounded bg-primary-container hover:bg-primary text-white font-label-md text-label-md flex items-center space-x-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-[14px]" data-icon="draw">draw</span>
+<span>Sign Override</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar for Document Swapping -->
+<div class="pt-2 flex items-center justify-between border-t border-outline-variant/60 text-label-md font-label-md">
+<button class="h-8 px-3 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-secondary hover:text-primary flex items-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_back">arrow_back</span>
+<span>Previous: DOC-03 Work Order (CPWD)</span>
+</button>
+<button class="h-8 px-3 rounded bg-primary-container text-white hover:bg-primary flex items-center space-x-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]" data-icon="assignment_turned_in">assignment_turned_in</span>
+<span>Return to Officer Decision</span>
+</button>
+<button class="h-8 px-3 rounded bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-secondary hover:text-primary flex items-center space-x-1.5 transition-colors">
+<span>Next: DOC-02 MII Declaration</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- AUDIT FOOTER -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant py-2.5 mt-auto">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between text-[11px] font-code-tabular-sm text-secondary">
+<div class="flex items-center space-x-4">
+<span>National Informatics Centre (NIC) • Procurement Evaluation Framework v8.4.1</span>
+<span>•</span>
+<span>Session ID: EV-OFFICER-7749-SECURE</span>
+<span>•</span>
+<span>IP: 10.42.190.12 (GovNet Encrypted)</span>
+</div>
+<div class="flex items-center space-x-3">
+<span class="inline-flex items-center text-emerald-700">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 mr-1.5"></span>
+          All audit log events streamed to Central Vigilance Archive
+        </span>
+</div>
+</div>
+</footer>
+</body></html>

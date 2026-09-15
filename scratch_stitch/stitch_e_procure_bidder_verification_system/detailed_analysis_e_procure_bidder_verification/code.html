@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detailed Analysis — E-Procure Verify | National Public Procurement Portal</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#f7f9fb",
+            "primary-fixed": "#d6e3ff",
+            "secondary-fixed-dim": "#b9c7e0",
+            "on-primary-fixed-variant": "#394761",
+            "tertiary-fixed-dim": "#b7c4ff",
+            "surface-container-high": "#e6e8ea",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#44474d",
+            "on-background": "#191c1e",
+            "on-error": "#ffffff",
+            "inverse-primary": "#b8c7e6",
+            "primary-fixed-dim": "#b8c7e6",
+            "error-container": "#ffdad6",
+            "primary-container": "#14233b",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-fixed": "#001551",
+            "outline": "#75777e",
+            "error": "#ba1a1a",
+            "surface-bright": "#f7f9fb",
+            "on-surface": "#191c1e",
+            "on-secondary-fixed-variant": "#3a485c",
+            "inverse-surface": "#2d3133",
+            "on-secondary-fixed": "#0d1c2f",
+            "surface-tint": "#505f7a",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#f7f9fb",
+            "primary": "#000d23",
+            "surface-container-low": "#f2f4f6",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e0e3e5",
+            "secondary-fixed": "#d5e3fd",
+            "outline-variant": "#c5c6ce",
+            "on-error-container": "#93000a",
+            "surface-container": "#eceef0",
+            "secondary": "#515f74",
+            "secondary-container": "#d5e3fd",
+            "on-primary-container": "#7c8ba7",
+            "on-tertiary": "#ffffff",
+            "tertiary-container": "#001b62",
+            "on-secondary-container": "#57657b",
+            "on-tertiary-fixed-variant": "#0039b5",
+            "tertiary": "#000930",
+            "tertiary-fixed": "#dce1ff",
+            "on-tertiary-container": "#5f81ff",
+            "on-primary-fixed": "#0c1c33",
+            "surface-dim": "#d8dadc",
+            "inverse-on-surface": "#eff1f3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "2rem"
+          },
+          "fontFamily": {
+            "label-md": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "code-tabular": ["JetBrains Mono"],
+            "display-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "code-tabular-sm": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "title-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-lg-mobile": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code-tabular": ["13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "500" }],
+            "display-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "code-tabular-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-md": ["18px", { "lineHeight": "24px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "title-sm": ["15px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "body-lg": ["15px", { "lineHeight": "22px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen">
+<!-- TopNavBar (Shared Component) -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest border-b border-outline-variant dark:border-outline-variant w-full sticky top-0 z-50">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between h-14">
+<!-- Left side: Brand + Search -->
+<div class="flex items-center gap-space-xl">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-title-sm text-title-sm font-semibold tracking-tight text-primary dark:text-primary-fixed">E-Procure Verify</span>
+<span class="text-outline-variant">|</span>
+<span class="font-label-md text-label-md text-secondary tracking-tight">National Public Procurement Portal</span>
+</div>
+<div class="relative w-72">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-secondary" data-icon="search">search</span>
+<input class="w-full pl-9 pr-3 py-1 bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md rounded-lg focus:outline-none focus:border-primary-container h-8" placeholder="Search parameters, CIN, PAN..." type="text"/>
+</div>
+</div>
+<!-- Center: Navigation Links -->
+<nav class="flex items-center gap-space-xl pt-3">
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed font-normal pb-3 transition-colors duration-150 ease-in-out font-label-md text-label-md" href="#">Overview</a>
+<a class="border-b-2 border-primary-container dark:border-primary-fixed text-primary dark:text-primary-fixed font-semibold pb-3 transition-colors duration-150 ease-in-out font-label-md text-label-md" href="#">Detailed Analysis</a>
+<a class="text-secondary dark:text-secondary-fixed-dim hover:text-primary dark:hover:text-primary-fixed font-normal pb-3 transition-colors duration-150 ease-in-out font-label-md text-label-md" href="#">Documents</a>
+</nav>
+<!-- Right side: Actions + Icons + Profile -->
+<div class="flex items-center gap-space-md">
+<button class="h-8 px-3 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low text-secondary font-label-md text-label-md rounded-lg flex items-center gap-1 transition-colors duration-150">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span>
+<span>Back to All Bids</span>
+</button>
+<button class="h-8 px-3 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container-low text-secondary font-label-md text-label-md rounded-lg flex items-center gap-1 transition-colors duration-150">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+<span>Export Audit Dossier</span>
+</button>
+<button class="h-8 px-3 bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md rounded-lg flex items-center gap-1 transition-colors duration-150 shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="gavel">gavel</span>
+<span>Record Officer Decision</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<button class="text-secondary hover:text-on-surface p-1 rounded hover:bg-surface-container-low transition-colors" title="Notifications">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-secondary hover:text-on-surface p-1 rounded hover:bg-surface-container-low transition-colors" title="Help Desk">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<div class="flex items-center gap-2 pl-1">
+<span class="material-symbols-outlined text-secondary" data-icon="account_circle">account_circle</span>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">OFFICER-ID: DL-8812</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Persistent Bidder Audit Header -->
+<section class="bg-surface-container-lowest border-b border-outline-variant">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop py-space-md">
+<div class="flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md text-primary font-bold">Bharat Infra Services Ltd.</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+              Score: 84/100 (Review Required)
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-outline-variant bg-surface-container-low text-secondary font-code-tabular-sm text-code-tabular-sm">
+<span class="material-symbols-outlined text-sm" data-icon="tag">tag</span>
+              GEM/2026/B/8912041
+            </span>
+</div>
+<div class="flex items-center gap-4 text-secondary font-body-md text-body-md">
+<span><strong>Tender:</strong> Provision &amp; Installation of Enterprise Network Infrastructure</span>
+<span class="text-outline-variant">•</span>
+<span class="font-code-tabular text-code-tabular">PAN: <strong class="text-on-surface">AAACB1234F</strong></span>
+<span class="text-outline-variant">•</span>
+<span class="font-code-tabular text-code-tabular">GSTIN: <strong class="text-on-surface">07AAACB1234F1Z5</strong></span>
+</div>
+</div>
+<div class="flex items-center gap-space-md">
+<div class="text-right">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">AUDIT PIPELINE STATUS</div>
+<div class="font-label-md text-label-md font-semibold text-primary">Evidentiary Ingestion Complete (100%)</div>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex flex-col items-end">
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">VERIFICATION TIMESTAMP</span>
+<span class="font-code-tabular text-code-tabular text-on-surface">2026-03-29 11:42:08 IST</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Canvas -->
+<main class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop py-space-xl flex flex-col gap-space-xl">
+<!-- Intent Banner -->
+<div class="bg-surface-container-low border-l-4 border-primary-container p-space-md rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="policy">policy</span>
+<div>
+<h2 class="font-title-sm text-title-sm text-primary">Evidence-Driven Verification &amp; Deterministic Audit Trail</h2>
+<p class="font-body-md text-body-md text-secondary">Complete evidentiary reasoning, cross-registry lookups, and algorithmic score audit behind qualification result.</p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-code-tabular-sm text-code-tabular-sm px-2.5 py-1 bg-surface-container-lowest border border-outline-variant rounded-lg text-secondary">Rule Pack: GFR-2017-V4.2</span>
+<span class="font-code-tabular-sm text-code-tabular-sm px-2.5 py-1 bg-surface-container-lowest border border-outline-variant rounded-lg text-secondary">Audit Hash: #0x82f9...b1</span>
+</div>
+</div>
+<!-- Bento Grid Section 1 & Section 6 side-by-side -->
+<div class="grid grid-cols-12 gap-gutter-desktop items-start">
+<!-- SECTION 1: TENDER REQUIREMENTS & EVIDENTIARY AUDIT (8 Cols) -->
+<section class="col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="fact_check">fact_check</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 1 — Tender Requirements &amp; Evidentiary Audit</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">2 Mandatory Clauses Evaluated</span>
+</div>
+<!-- Requirement Card 1: PASS -->
+<div class="border border-outline-variant rounded-lg bg-surface-container-lowest overflow-hidden">
+<div class="bg-surface-container-low px-space-md py-space-sm flex items-center justify-between border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+                PASS
+              </span>
+<span class="font-label-md text-label-md font-semibold text-primary">Requirement 1: Minimum Annual Turnover (₹100 Lakh Threshold)</span>
+</div>
+<div class="flex items-center gap-3 font-code-tabular-sm text-code-tabular-sm text-secondary">
+<span>Threshold: <strong>₹100,00,000</strong></span>
+<span>•</span>
+<span>Bidder Extracted: <strong class="text-on-surface">₹250,00,000</strong></span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-emerald-700 text-lg mt-0.5" data-icon="task_alt">task_alt</span>
+<p class="font-body-md text-body-md text-on-surface">
+<strong>Auditor Explanation:</strong> Turnover certified by Chartered Accountant UDIN 24098214BCDE matches Income Tax returns and audited balance sheets for FY 2022-23, 2023-24, and 2024-25.
+              </p>
+</div>
+<!-- Evidence Preview -->
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-secondary" data-icon="description">description</span>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary">CA Certificate UDIN 24098214BCDE (Page 3)</div>
+<div class="font-code-tabular text-code-tabular text-secondary">Verified Extract: "FY 24: ₹280L, FY 23: ₹240L, FY 22: ₹230L | 3-Yr Avg: ₹250.00L"</div>
+</div>
+</div>
+<a class="h-7 px-2.5 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-primary font-label-md text-label-md rounded-lg flex items-center gap-1" href="#">
+<span>View Evidence Doc</span>
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Requirement Card 2: REVIEW REQUIRED -->
+<div class="border border-amber-300 rounded-lg bg-surface-container-lowest overflow-hidden">
+<div class="bg-amber-50/70 px-space-md py-space-sm flex items-center justify-between border-b border-amber-200">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-amber-400 bg-amber-100 text-amber-900 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+                REVIEW REQUIRED
+              </span>
+<span class="font-label-md text-label-md font-semibold text-primary">Requirement 2: Prior Experience Period (Min 1.0 Year on Equivalent Work)</span>
+</div>
+<div class="flex items-center gap-3 font-code-tabular-sm text-code-tabular-sm text-secondary">
+<span>Threshold: <strong>≥ 1.0 Year</strong></span>
+<span>•</span>
+<span>Extracted: <strong class="text-amber-900">1.92 Years (Flagged)</strong></span>
+</div>
+</div>
+<div class="p-space-md flex flex-col gap-space-sm">
+<div class="flex items-start gap-2">
+<span class="material-symbols-outlined text-amber-700 text-lg mt-0.5" data-icon="report_problem">report_problem</span>
+<p class="font-body-md text-body-md text-on-surface">
+<strong>Auditor Explanation:</strong> Total duration across WO-2023-882 calculates to 1.92 years based on commencement date, but final completion date on the submitted Experience Certificate is unstated. Requires officer confirmation before final acceptance.
+              </p>
+</div>
+<!-- Evidence Preview -->
+<div class="border border-amber-200 rounded-lg p-space-sm bg-amber-50/40 flex items-center justify-between">
+<div class="flex items-center gap-space-md">
+<span class="material-symbols-outlined text-amber-800" data-icon="history_edu">history_edu</span>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary">Work Order WO-2023-882 &amp; Completion Cert</div>
+<div class="font-code-tabular text-code-tabular text-on-surface-variant">Extract: "Commencement 01/03/2023. Cert issued 10/12/2024 does not state explicit date of satisfactory completion."</div>
+</div>
+</div>
+<a class="h-7 px-2.5 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-primary font-label-md text-label-md rounded-lg flex items-center gap-1" href="#">
+<span>View Evidence Doc</span>
+<span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: DETERMINISTIC SCORE REDUCTION AUDIT (4 Cols) -->
+<section class="col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="calculate">calculate</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 6 — Score Reduction Audit</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Clause 14.2</span>
+</div>
+<div class="flex items-baseline justify-between py-1 bg-surface-container-low px-3 rounded-lg border border-outline-variant">
+<span class="font-label-md text-label-md text-secondary">Base Score:</span>
+<span class="font-code-tabular text-code-tabular font-bold text-on-surface">100 / 100</span>
+</div>
+<!-- Deduction items -->
+<div class="flex flex-col gap-2">
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-lowest">
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="font-semibold text-primary">Deduction 1: Missing Date on Exp. Cert</span>
+<span class="font-code-tabular text-code-tabular font-bold text-rose-700">-10 pts</span>
+</div>
+<p class="font-body-md text-body-md text-secondary">Severity: REVIEW. Lacks definitive completion date signature.</p>
+</div>
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-lowest">
+<div class="flex items-center justify-between text-xs mb-1">
+<span class="font-semibold text-primary">Deduction 2: SKU String Variant</span>
+<span class="font-code-tabular text-code-tabular font-bold text-rose-700">-6 pts</span>
+</div>
+<p class="font-body-md text-body-md text-secondary">Severity: MINOR REVIEW. 'Model X-500' vs 'Model X-500-Pro' in OEM letter.</p>
+</div>
+</div>
+<div class="border-t border-dashed border-outline-variant pt-space-sm flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-primary font-bold">Final Deterministic Score:</span>
+<span class="font-display-lg text-display-lg font-bold text-amber-700">84<span class="text-headline-md text-secondary font-normal">/100</span></span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-lg border border-outline-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-base mt-0.5" data-icon="lock">lock</span>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary leading-tight">
+            Deterministic algorithm based strictly on Tender Scoring Matrix Clause 14.2. No AI variance, non-linear extrapolation, or generative weighting applied.
+          </p>
+</div>
+</section>
+</div>
+<!-- SECTION 2: IDENTITY VERIFICATION & NORMALIZATION TABLE -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="badge">badge</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 2 — Identity Verification &amp; Normalization Matrix</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">MCA-21 • NSDL • GSTN API Cross-Resolution</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b-2 border-outline-variant">
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Entity Parameter</th>
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Submitted Tender Entry</th>
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Source Document</th>
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Registry Verification</th>
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Status</th>
+<th class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider text-right">Confidence</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md text-body-md">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Company Legal Name</td>
+<td class="py-2.5 px-3">Bharat Infra Services Private Limited</td>
+<td class="py-2.5 px-3 text-secondary">Certificate of Incorporation (<span class="font-code-tabular text-code-tabular-sm">CIN: U72200DL2018PTC334211</span>)</td>
+<td class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm text-emerald-800 font-medium">MCA-21 Registry: ACTIVE</td>
+<td class="py-2.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span> EXACT MATCH
+                </span>
+</td>
+<td class="py-2.5 px-3 text-right font-code-tabular text-code-tabular font-semibold text-emerald-800">100%</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Permanent Account Number (PAN)</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular font-semibold">AAACB1234F</td>
+<td class="py-2.5 px-3 text-secondary">PAN Card Copy &amp; Form 26AS</td>
+<td class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm text-emerald-800 font-medium">NSDL PAN API: Valid, Name Matches</td>
+<td class="py-2.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span> EXACT MATCH
+                </span>
+</td>
+<td class="py-2.5 px-3 text-right font-code-tabular text-code-tabular font-semibold text-emerald-800">100%</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">GSTIN Registration</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular font-semibold">07AAACB1234F1Z5</td>
+<td class="py-2.5 px-3 text-secondary">GST Certificate &amp; GSTR-3B</td>
+<td class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm text-emerald-800 font-medium">GSTN Portal: Active Regular Taxpayer</td>
+<td class="py-2.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span> EXACT MATCH
+                </span>
+</td>
+<td class="py-2.5 px-3 text-right font-code-tabular text-code-tabular font-semibold text-emerald-800">100%</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Registered Address</td>
+<td class="py-2.5 px-3">Plot 42, Okhla Industrial Area Ph-III, New Delhi 110020</td>
+<td class="py-2.5 px-3 text-secondary">Electricity Bill &amp; GST Reg</td>
+<td class="py-2.5 px-3 text-secondary">Normalization Applied (Expanded 'Ph-III' to 'Phase 3')</td>
+<td class="py-2.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span> VERIFIED
+                </span>
+</td>
+<td class="py-2.5 px-3 text-right font-code-tabular text-code-tabular font-semibold text-emerald-800">98.4%</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Authorized Signatory</td>
+<td class="py-2.5 px-3">Rajesh Kumar (Director, <span class="font-code-tabular text-code-tabular-sm">DIN: 08219412</span>)</td>
+<td class="py-2.5 px-3 text-secondary">Board Resolution &amp; DSC</td>
+<td class="py-2.5 px-3 font-code-tabular-sm text-code-tabular-sm text-emerald-800 font-medium">MCA Registry Signatory Details: Matched</td>
+<td class="py-2.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-xs" data-icon="check">check</span> VERIFIED
+                </span>
+</td>
+<td class="py-2.5 px-3 text-right font-code-tabular text-code-tabular font-semibold text-emerald-800">100%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- SECTION 3: CROSS-DOCUMENT TRIANGULATION -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 3 — Cross-Document Triangulation</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Multi-Vector Consistency Checks</span>
+</div>
+<div class="grid grid-cols-2 gap-gutter-desktop">
+<!-- Triangulation Card 1: Consistent -->
+<div class="border border-outline-variant rounded-lg p-space-md bg-surface-container-lowest flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<div>
+<span class="font-label-md text-label-md font-bold text-primary">Work Order WO-2024-0192 ↔ Work Completion Certificate</span>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Triangulation Pair #TR-01</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="verified">verified</span>
+              CONSISTENT
+            </span>
+</div>
+<div class="grid grid-cols-1 gap-2 font-body-md text-body-md">
+<div class="flex items-center justify-between p-2 bg-surface-container-low rounded">
+<span class="font-medium text-secondary">PO Number:</span>
+<span class="font-code-tabular text-code-tabular font-semibold text-primary">WO-2024-0192 == WO-2024-0192 <span class="text-emerald-700 font-bold">✓ MATCH</span></span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-low rounded">
+<span class="font-medium text-secondary">Contract Value:</span>
+<span class="font-code-tabular text-code-tabular font-semibold text-primary">₹1,42,00,000 == ₹1,42,00,000 <span class="text-emerald-700 font-bold">✓ MATCH</span></span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-low rounded">
+<span class="font-medium text-secondary">Client Identity:</span>
+<span class="font-body-md text-body-md font-medium text-primary">Central Public Works Dept == CPWD Executive Engineer <span class="text-emerald-700 font-bold">✓ MATCH</span></span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-low rounded">
+<span class="font-medium text-secondary">Scope of Work:</span>
+<span class="font-body-md text-body-md text-primary">'Campus LAN &amp; Structured Cabling' == 'LAN Cabling &amp; Switching' <span class="text-emerald-700 font-bold">✓ SEMANTIC MATCH</span></span>
+</div>
+</div>
+<div class="text-xs text-secondary italic">Status: Evidence Triangulated across issuing authority and billing ledger.</div>
+</div>
+<!-- Triangulation Card 2: Discrepancy -->
+<div class="border border-amber-300 rounded-lg p-space-md bg-amber-50/20 flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-amber-200 pb-2">
+<div>
+<span class="font-label-md text-label-md font-bold text-primary">Make in India Declaration ↔ OEM Authorization Letter</span>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Triangulation Pair #TR-02</div>
+</div>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border border-amber-400 bg-amber-100 text-amber-900 font-code-tabular-sm text-code-tabular-sm font-semibold">
+<span class="material-symbols-outlined text-sm" data-icon="report">report</span>
+              REVIEW REQUIRED
+            </span>
+</div>
+<div class="grid grid-cols-1 gap-2 font-body-md text-body-md">
+<div class="flex items-center justify-between p-2 bg-surface-container-lowest border border-outline-variant rounded">
+<span class="font-medium text-secondary">OEM Name:</span>
+<span class="font-body-md text-body-md font-semibold text-primary">Cisco Systems India Pvt Ltd == Cisco Systems India Pvt Ltd <span class="text-emerald-700 font-bold">✓ MATCH</span></span>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-lowest border border-outline-variant rounded">
+<span class="font-medium text-secondary">Product Family:</span>
+<span class="font-body-md text-body-md font-semibold text-primary">Enterprise Switch == Enterprise Switch <span class="text-emerald-700 font-bold">✓ MATCH</span></span>
+</div>
+<div class="flex items-center justify-between p-2 bg-amber-50 border border-amber-300 rounded">
+<span class="font-medium text-amber-900">Model Identifier:</span>
+<span class="font-code-tabular text-code-tabular font-bold text-amber-900">'Model X-500' vs 'Model X-500-Pro' <span class="text-rose-700 font-bold">⚠ DISCREPANCY</span></span>
+</div>
+<div class="p-2 bg-surface-container-lowest border border-amber-200 rounded text-xs text-on-surface">
+<strong>Officer Note:</strong> Model suffix '-Pro' in OEM letter represents the compliant SKU according to tender BOQ Item 3. Officer verification recommended.
+            </div>
+</div>
+<div class="text-xs text-amber-800 font-medium">Status: Identifier Discrepancy logged for evaluative concurrence.</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4 & SECTION 5: Internal Consistency + Statutory Verification -->
+<div class="grid grid-cols-12 gap-gutter-desktop">
+<!-- SECTION 4: INTERNAL CONSISTENCY & ARITHMETIC CHECKS (4 cols) -->
+<section class="col-span-4 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="functions">functions</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 4 — Internal Consistency</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Deterministic</span>
+</div>
+<div class="flex flex-col gap-space-sm font-body-md text-body-md">
+<!-- Check 1 -->
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md font-semibold text-primary">Order Calculation Consistency</span>
+<span class="text-emerald-700 font-code-tabular-sm text-code-tabular-sm font-bold">✓ CONSISTENT</span>
+</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">
+              Declared Value = 500 units × ₹20,000 = ₹1,00,00,000.<br/>
+              Declared: ₹1,00,00,000 (Exact sum).
+            </div>
+</div>
+<!-- Check 2 -->
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md font-semibold text-primary">Date Chronology Validation</span>
+<span class="text-emerald-700 font-code-tabular-sm text-code-tabular-sm font-bold">✓ PASS</span>
+</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">
+              Incorporation (2018) → UDYAM (2020) → WO Award (2023) → Completion (2024). Valid sequence.
+            </div>
+</div>
+<!-- Check 3 -->
+<div class="border border-outline-variant rounded-lg p-space-sm bg-surface-container-low">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-md text-label-md font-semibold text-primary">Turnover vs Net Worth</span>
+<span class="text-emerald-700 font-code-tabular-sm text-code-tabular-sm font-bold">✓ PASS</span>
+</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">
+              Turnover ₹250 Lakh, Net Worth ₹92 Lakh (&gt; 0). Zero capital erosion detected.
+            </div>
+</div>
+</div>
+</section>
+<!-- SECTION 5: STATUTORY VERIFICATION AUDIT TABLE (8 cols) -->
+<section class="col-span-8 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 5 — Statutory Verification Audit Table</h3>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Multi-Registry Cross-Validation</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b-2 border-outline-variant">
+<th class="py-2 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Statutory Registry</th>
+<th class="py-2 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Identifier / Target</th>
+<th class="py-2 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Verification Method</th>
+<th class="py-2 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider">Record Status</th>
+<th class="py-2 px-3 font-code-tabular-sm text-code-tabular-sm uppercase text-secondary font-bold tracking-wider text-right">Environment</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md text-body-md">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">MCA-21 Corporate Registry</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular-sm">CIN: U72200DL2018PTC334211</td>
+<td class="py-2.5 px-3 text-secondary">Direct API Check</td>
+<td class="py-2.5 px-3 text-emerald-800 font-medium">Company ACTIVE, Compliant Filings</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-block px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-bold">LIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">GSTN Common Portal</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular-sm">GSTIN: 07AAACB1234F1Z5</td>
+<td class="py-2.5 px-3 text-secondary">GSTR-1 / GSTR-3B Check</td>
+<td class="py-2.5 px-3 text-emerald-800 font-medium">Active, Return Filed up to Sept 2026</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-block px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-bold">LIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Income Tax CBDT</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular-sm">PAN: AAACB1234F</td>
+<td class="py-2.5 px-3 text-secondary">Form 26AS Cross-check</td>
+<td class="py-2.5 px-3 text-emerald-800 font-medium">Valid, Returns Filed FY 22-23 to 24-25</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-block px-2 py-0.5 rounded-lg border border-emerald-300 bg-emerald-50 text-emerald-800 font-code-tabular-sm text-code-tabular-sm font-bold">LIVE</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">Central Vigilance Commission (CVC) Debarment List</td>
+<td class="py-2.5 px-3">Bharat Infra Services Ltd.</td>
+<td class="py-2.5 px-3 text-secondary">CVC Blacklist Database</td>
+<td class="py-2.5 px-3 text-on-surface">No Debarment Orders Found</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-block px-2 py-0.5 rounded-lg border border-amber-300 bg-amber-50 text-amber-800 font-code-tabular-sm text-code-tabular-sm font-bold">DEMO</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-2.5 px-3 font-semibold text-primary">GeM Portal Incident Management System</td>
+<td class="py-2.5 px-3 font-code-tabular text-code-tabular-sm">Vendor ID: GEM-V-992182</td>
+<td class="py-2.5 px-3 text-secondary">GeM Watchlist Check</td>
+<td class="py-2.5 px-3 text-on-surface">Zero adverse incidents in 24 months</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-block px-2 py-0.5 rounded-lg border border-blue-300 bg-blue-50 text-blue-800 font-code-tabular-sm text-code-tabular-sm font-bold">SIMULATED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- SECTION 7: COMPREHENSIVE AI REASONING & RECOMMENDATION -->
+<section class="bg-surface-container-lowest border-2 border-primary-container rounded-lg p-space-lg flex flex-col gap-space-md">
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-title-sm text-title-sm text-primary font-bold">SECTION 7 — AI-GENERATED ADVISORY ASSESSMENT</h3>
+</div>
+<span class="inline-block px-2 py-0.5 rounded-lg border border-outline-variant bg-surface-container-low text-secondary font-code-tabular-sm text-code-tabular-sm font-semibold">ADVISORY ONLY</span>
+</div>
+<div class="grid grid-cols-12 gap-gutter-desktop items-center">
+<div class="col-span-8 flex flex-col gap-space-sm">
+<h4 class="font-label-md text-label-md font-bold text-primary uppercase tracking-wide">Synthesis of Facts &amp; Root Causes:</h4>
+<p class="font-body-md text-body-md text-on-surface leading-relaxed">
+            Bharat Infra Services Ltd. demonstrates full compliance across statutory identities, MCA filing regularity, and financial turnover requirements. However, two non-fatal evidentiary gaps require evaluation officer concurrence:
+          </p>
+<ul class="list-disc pl-5 font-body-md text-body-md text-on-surface space-y-1">
+<li>
+<strong>Prior Work Duration:</strong> Work Order WO-2023-882 (Page 2, Clause 4.1) establishes start date 01/03/2023, while Completion Certificate (Page 1) omits the definitive end date. This generated a 10-point algorithmic deduction.
+            </li>
+<li>
+<strong>OEM Model Suffix:</strong> Make in India Declaration cites 'Model X-500', whereas the OEM Authorization Letter (Page 1, Para 2) references 'Model X-500-Pro'. Officer inspection reveals that '-Pro' is the tender-compliant model specified in BOQ Item 3.
+            </li>
+</ul>
+<div class="p-space-sm bg-surface-container-low border-l-4 border-amber-500 rounded text-xs text-secondary mt-1">
+<strong>Statutory Mandate:</strong> Final determination remains strictly with the designated procurement evaluation officer. Algorithmic scores and advisories do not substitute for institutional officer sign-off under Rule 173 of GFR 2017.
+          </div>
+</div>
+<div class="col-span-4 bg-surface-container-low border border-outline-variant rounded-lg p-space-md flex flex-col gap-space-md justify-between h-full">
+<div>
+<div class="font-label-md text-label-md font-bold text-primary mb-1">Recommended Officer Actions</div>
+<p class="font-body-md text-body-md text-secondary mb-3">Expedite evaluation by directly reviewing contested source exhibits:</p>
+<div class="flex flex-col gap-2">
+<a class="h-8 px-3 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-primary font-label-md text-label-md rounded-lg flex items-center justify-between" href="#">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+<span>Inspect Completion Cert (Doc 4)</span>
+</span>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">p.1</span>
+</a>
+<a class="h-8 px-3 border border-outline-variant bg-surface-container-lowest hover:bg-surface-container text-primary font-label-md text-label-md rounded-lg flex items-center justify-between" href="#">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="visibility">visibility</span>
+<span>Inspect OEM Authorization (Doc 7)</span>
+</span>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">p.1</span>
+</a>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex items-center justify-between">
+<a class="text-secondary hover:text-primary font-label-md text-label-md flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+<span>Back to Overview</span>
+</a>
+<button class="h-8 px-3 bg-primary-container hover:bg-primary text-on-primary font-label-md text-label-md rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm" data-icon="edit_document">edit_document</span>
+<span>Proceed to Decision Console</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="mt-space-2xl border-t border-outline-variant bg-surface-container-lowest py-space-md">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between font-code-tabular-sm text-code-tabular-sm text-secondary">
+<div>National Informatics Centre (NIC) • Ministry of Commerce &amp; Industry, Government of India</div>
+<div>Audit Integrity Protocol v3.8.4 • Encrypted Session Token: 994-A281-XC</div>
+</div>
+</footer>
+</body></html>

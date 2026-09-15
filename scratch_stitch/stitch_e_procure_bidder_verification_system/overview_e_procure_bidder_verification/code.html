@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>E-Procure Verify | Overview - Bidder Verification Platform</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#f7f9fb",
+            "primary-fixed": "#d6e3ff",
+            "secondary-fixed-dim": "#b9c7e0",
+            "on-primary-fixed-variant": "#394761",
+            "tertiary-fixed-dim": "#b7c4ff",
+            "surface-container-high": "#e6e8ea",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#44474d",
+            "on-background": "#191c1e",
+            "on-error": "#ffffff",
+            "inverse-primary": "#b8c7e6",
+            "primary-fixed-dim": "#b8c7e6",
+            "error-container": "#ffdad6",
+            "primary-container": "#14233b",
+            "surface-container-highest": "#e0e3e5",
+            "on-tertiary-fixed": "#001551",
+            "outline": "#75777e",
+            "error": "#ba1a1a",
+            "surface-bright": "#f7f9fb",
+            "on-surface": "#191c1e",
+            "on-secondary-fixed-variant": "#3a485c",
+            "inverse-surface": "#2d3133",
+            "on-secondary-fixed": "#0d1c2f",
+            "surface-tint": "#505f7a",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#f7f9fb",
+            "primary": "#000d23",
+            "surface-container-low": "#f2f4f6",
+            "on-primary": "#ffffff",
+            "surface-variant": "#e0e3e5",
+            "secondary-fixed": "#d5e3fd",
+            "outline-variant": "#c5c6ce",
+            "on-error-container": "#93000a",
+            "surface-container": "#eceef0",
+            "secondary": "#515f74",
+            "secondary-container": "#d5e3fd",
+            "on-primary-container": "#7c8ba7",
+            "on-tertiary": "#ffffff",
+            "tertiary-container": "#001b62",
+            "on-secondary-container": "#57657b",
+            "on-tertiary-fixed-variant": "#0039b5",
+            "tertiary": "#000930",
+            "tertiary-fixed": "#dce1ff",
+            "on-tertiary-container": "#5f81ff",
+            "on-primary-fixed": "#0c1c33",
+            "surface-dim": "#d8dadc",
+            "inverse-on-surface": "#eff1f3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-lg": "1rem",
+            "margin": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "space-xl": "1.5rem",
+            "space-md": "0.75rem",
+            "space-xs": "0.25rem",
+            "space-2xl": "2rem"
+          },
+          "fontFamily": {
+            "label-md": [
+              "Inter"
+            ],
+            "headline-lg-mobile": [
+              "Inter"
+            ],
+            "code-tabular": [
+              "JetBrains Mono"
+            ],
+            "display-lg": [
+              "Inter"
+            ],
+            "body-md": [
+              "Inter"
+            ],
+            "code-tabular-sm": [
+              "JetBrains Mono"
+            ],
+            "headline-md": [
+              "Inter"
+            ],
+            "title-sm": [
+              "Inter"
+            ],
+            "headline-lg": [
+              "Inter"
+            ],
+            "body-lg": [
+              "Inter"
+            ]
+          },
+          "fontSize": {
+            "label-md": [
+              "12px",
+              {
+                "lineHeight": "16px",
+                "letterSpacing": "0.02em",
+                "fontWeight": "500"
+              }
+            ],
+            "headline-lg-mobile": [
+              "20px",
+              {
+                "lineHeight": "28px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "code-tabular": [
+              "13px",
+              {
+                "lineHeight": "18px",
+                "letterSpacing": "0.01em",
+                "fontWeight": "500"
+              }
+            ],
+            "display-lg": [
+              "30px",
+              {
+                "lineHeight": "38px",
+                "letterSpacing": "-0.02em",
+                "fontWeight": "700"
+              }
+            ],
+            "body-md": [
+              "13px",
+              {
+                "lineHeight": "18px",
+                "fontWeight": "400"
+              }
+            ],
+            "code-tabular-sm": [
+              "11px",
+              {
+                "lineHeight": "14px",
+                "letterSpacing": "0.02em",
+                "fontWeight": "500"
+              }
+            ],
+            "headline-md": [
+              "18px",
+              {
+                "lineHeight": "24px",
+                "letterSpacing": "-0.01em",
+                "fontWeight": "600"
+              }
+            ],
+            "title-sm": [
+              "15px",
+              {
+                "lineHeight": "20px",
+                "fontWeight": "600"
+              }
+            ],
+            "headline-lg": [
+              "24px",
+              {
+                "lineHeight": "32px",
+                "letterSpacing": "-0.015em",
+                "fontWeight": "600"
+              }
+            ],
+            "body-lg": [
+              "15px",
+              {
+                "lineHeight": "22px",
+                "fontWeight": "400"
+              }
+            ]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 18px;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar (Derived directly from Shared Components JSON & Style Guidance) -->
+<header class="bg-surface-container-lowest border-b border-outline-variant sticky top-0 z-50">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between h-14">
+<!-- Brand & Left Navigation Structure -->
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-surface-container-lowest font-headline-md text-headline-md shadow-sm">
+<span class="material-symbols-outlined icon-fill" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<span class="font-title-sm text-title-sm font-semibold tracking-tight text-primary flex items-center gap-1.5">
+              E-Procure Verify
+              <span class="font-label-md text-label-md text-secondary border border-outline-variant px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider bg-surface-container-low font-normal">Gov-IN</span>
+</span>
+</div>
+</div>
+<!-- Global Navigation Items -->
+<nav class="flex items-center space-x-6 h-14 pt-3.5">
+<!-- Overview is ACTIVE as this is Page 1: Overview -->
+<a class="border-b-2 border-primary-container text-primary font-semibold pb-3 font-body-md text-body-md flex items-center gap-1.5 transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            Overview
+          </a>
+<a class="text-secondary hover:text-primary font-normal pb-3 font-body-md text-body-md flex items-center gap-1.5 transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+            Detailed Analysis
+          </a>
+<a class="text-secondary hover:text-primary font-normal pb-3 font-body-md text-body-md flex items-center gap-1.5 transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+            Documents
+          </a>
+</nav>
+</div>
+<!-- Action & Profile Structure -->
+<div class="flex items-center gap-3">
+<!-- Back to All Bids Secondary Action -->
+<a class="inline-flex items-center gap-1.5 px-3 h-8 rounded-lg border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_back">arrow_back</span>
+          Back to All Bids
+        </a>
+<!-- Dossier Export Button -->
+<button class="inline-flex items-center gap-1.5 px-3 h-8 rounded-lg border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low hover:text-on-surface transition-colors duration-150 ease-in-out" type="button">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+          Export Audit Dossier
+        </button>
+<!-- Record Officer Decision Anchor CTA -->
+<a class="inline-flex items-center gap-1.5 px-3.5 h-8 rounded-lg bg-primary-container text-surface-container-lowest font-label-md text-label-md hover:bg-primary transition-colors duration-150 ease-in-out" href="#officer-decision-console">
+<span class="material-symbols-outlined text-[16px]" data-icon="gavel">gavel</span>
+          Record Officer Decision
+        </a>
+<div class="h-5 w-[1px] bg-outline-variant mx-1"></div>
+<!-- Trailing System Icons -->
+<button class="w-8 h-8 flex items-center justify-center rounded-lg text-secondary hover:bg-surface-container-low hover:text-on-surface transition-colors" title="Notifications">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg text-secondary hover:bg-surface-container-low hover:text-on-surface transition-colors" title="Help &amp; System Rules">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+<!-- Officer Profile Badge -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<div class="w-7 h-7 rounded-full bg-primary text-surface-container-lowest flex items-center justify-center font-code-tabular text-[11px] font-semibold">
+            PS
+          </div>
+<div class="text-left hidden xl:block leading-tight">
+<p class="font-label-md text-label-md font-semibold text-primary">P. Sharma</p>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">Procurement Officer Gr. I</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas Container -->
+<main class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop py-space-xl flex flex-col gap-space-xl flex-1">
+<!-- PERSISTENT BIDDER & TENDER SUMMARY HEADER -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg">
+<!-- Left details: Company & Tender details -->
+<div class="space-y-1.5">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="font-headline-lg text-headline-lg font-semibold text-primary">Bharat Infra Services Ltd.</span>
+<!-- Status Badge -->
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#EBFDF2] text-[#247A45] border border-[#A6F4C5]">
+<span class="material-symbols-outlined text-[14px] icon-fill" data-icon="check_circle">check_circle</span>
+              VERIFICATION COMPLETED
+            </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm bg-surface-container text-secondary border border-outline-variant">
+              MSME UDYAM: <span class="font-code-tabular text-on-surface font-semibold">UDYAM-DL-02-0049182</span>
+</span>
+</div>
+<div class="flex items-center gap-3 text-secondary font-body-md text-body-md flex-wrap">
+<div class="flex items-center gap-1">
+<span class="font-medium text-primary">Tender:</span> Provision &amp; Installation of Enterprise Network Infrastructure
+            </div>
+<span class="text-outline-variant">|</span>
+<div class="flex items-center gap-1 font-code-tabular text-code-tabular text-secondary">
+<span class="font-medium text-primary">Tender ID:</span> GEM/2026/B/8912041
+            </div>
+</div>
+<div class="flex items-center gap-4 text-secondary font-code-tabular text-code-tabular pt-0.5 flex-wrap">
+<div class="flex items-center gap-1.5">
+<span class="font-medium text-on-surface">PAN:</span>
+<span class="bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant text-primary font-semibold">AAACB1234F</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5">
+<span class="font-medium text-on-surface">GSTIN:</span>
+<span class="bg-surface-container-low px-1.5 py-0.5 rounded border border-outline-variant text-primary font-semibold">07AAACB1234F1Z5</span>
+</div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[15px]" data-icon="schedule">schedule</span>
+              Processed: 14 Oct 2026, 14:32 IST
+            </div>
+<span class="text-outline-variant">•</span>
+<div class="flex items-center gap-1.5 text-secondary">
+<span class="material-symbols-outlined text-[15px]" data-icon="memory">memory</span>
+              Mode: Automated Triangulation Engine v4.2
+            </div>
+</div>
+</div>
+<!-- Quick Metatags / Actions on Persistent Bar -->
+<div class="flex lg:flex-col items-end justify-center gap-2 border-t lg:border-t-0 lg:border-l border-outline-variant pt-3 lg:pt-0 lg:pl-6">
+<div class="text-right">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">TENDER ESTIMATED VALUE</div>
+<div class="font-code-tabular text-body-lg font-bold text-primary">₹ 4,85,00,000</div>
+</div>
+<div class="text-right font-code-tabular-sm text-code-tabular-sm text-secondary">
+            Evaluation Window: <span class="text-[#B7791F] font-semibold">Day 2 of 5</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 1: TWO-COLUMN HERO SPLIT -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-stretch">
+<!-- Left Hero: COMPLIANCE SCORE Card (5 cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between border-b border-outline-variant pb-space-sm mb-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="fact_check">fact_check</span>
+<h2 class="font-headline-md text-headline-md text-primary font-semibold">COMPLIANCE SCORE</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#FEF8EC] text-[#B7791F] border border-[#FCD34D]">
+<span class="material-symbols-outlined text-[14px] icon-fill" data-icon="warning">warning</span>
+              REVIEW REQUIRED
+            </span>
+</div>
+<!-- Score Display -->
+<div class="flex items-baseline gap-3 my-space-md">
+<div class="font-display-lg text-display-lg text-primary font-bold tracking-tight">84</div>
+<div class="font-headline-lg text-headline-lg text-secondary font-medium">/ 100</div>
+<div class="ml-auto text-right">
+<span class="font-code-tabular text-label-md font-semibold text-[#B7791F]">84% Deterministic Match</span>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">Passing Threshold: 75 / 100</p>
+</div>
+</div>
+<p class="font-body-md text-body-md text-secondary border-l-2 border-primary-container pl-3 mb-space-lg leading-relaxed">
+            Deterministic Verification Score (Computed via Tender Rules &amp; Evidence Audit — Non-AI)
+          </p>
+<!-- Breakdown Stats Pill Grid -->
+<div class="grid grid-cols-4 gap-2 mb-space-lg">
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant text-center">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary font-medium">TOTAL CHECKS</div>
+<div class="font-code-tabular text-title-sm font-bold text-primary mt-0.5">36</div>
+</div>
+<div class="bg-[#EBFDF2]/60 p-2.5 rounded border border-[#A6F4C5] text-center">
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] font-medium">PASS</div>
+<div class="font-code-tabular text-title-sm font-bold text-[#247A45] mt-0.5">31</div>
+</div>
+<div class="bg-[#FEF8EC]/70 p-2.5 rounded border border-[#FCD34D] text-center">
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B7791F] font-medium">REVIEW</div>
+<div class="font-code-tabular text-title-sm font-bold text-[#B7791F] mt-0.5">4</div>
+</div>
+<div class="bg-[#FEF2F2]/70 p-2.5 rounded border border-[#FCA5A5] text-center">
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B42318] font-medium">FAIL</div>
+<div class="font-code-tabular text-title-sm font-bold text-[#B42318] mt-0.5">1</div>
+</div>
+</div>
+</div>
+<!-- Audit Findings Counter Bar -->
+<div class="pt-space-md border-t border-outline-variant flex items-center justify-between text-secondary font-code-tabular-sm text-code-tabular-sm">
+<div class="flex items-center gap-1.5 text-[#B7791F]">
+<span class="w-2 h-2 rounded-full bg-[#B7791F]"></span>
+<span class="font-medium">1 Major Finding</span>
+</div>
+<div class="flex items-center gap-1.5 text-[#B7791F]">
+<span class="w-2 h-2 rounded-full bg-[#FCD34D]"></span>
+<span class="font-medium">2 Minor Findings</span>
+</div>
+<div class="flex items-center gap-1.5 text-[#247A45]">
+<span class="w-2 h-2 rounded-full bg-[#247A45]"></span>
+<span class="font-medium">0 Critical Debarments</span>
+</div>
+</div>
+</div>
+<!-- Right Hero: OFFICER ATTENTION REQUIRED (7 cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-between">
+<div>
+<!-- Alert Banner -->
+<div class="flex items-center justify-between bg-[#FEF8EC] border border-[#FCD34D] rounded-lg px-3.5 py-2.5 mb-space-md">
+<div class="flex items-center gap-2 text-[#B7791F]">
+<span class="material-symbols-outlined text-[20px] icon-fill" data-icon="report_problem">report_problem</span>
+<span class="font-title-sm text-title-sm font-semibold">2 Priority Findings Require Officer Determination</span>
+</div>
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary font-medium">Action Pending</span>
+</div>
+<div class="space-y-space-md">
+<!-- Finding 1 Card -->
+<div class="border-l-4 border-l-[#B7791F] border border-outline-variant bg-surface-container-lowest rounded-lg p-space-md hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#B7791F] text-[18px] icon-fill" data-icon="warning">warning</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">Experience Certificate — Completion Date Omission</h3>
+<span class="font-code-tabular-sm text-code-tabular-sm px-1.5 py-0.5 rounded bg-surface-container text-secondary border border-outline-variant">Tender Cl. 4.2(b)</span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                    The submitted work completion certificate for PO-8921 mentions commencement (12-Jan-2023) but lacks an explicit date of completion in the canonical field.
+                  </p>
+</div>
+</div>
+<div class="mt-3 pt-2.5 border-t border-outline-variant flex items-center justify-between">
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Document: Annexure-III_Exp_Cert.pdf (Page 2)</span>
+<button class="inline-flex items-center gap-1 font-label-md text-label-md font-semibold text-primary hover:text-on-primary-fixed-variant group" type="button">
+                  Inspect Document Evidence
+                  <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Finding 2 Card -->
+<div class="border-l-4 border-l-[#B7791F] border border-outline-variant bg-surface-container-lowest rounded-lg p-space-md hover:bg-surface-container-low transition-colors duration-150">
+<div class="flex items-start justify-between gap-3">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#B7791F] text-[18px] icon-fill" data-icon="warning">warning</span>
+<h3 class="font-title-sm text-title-sm font-semibold text-primary">MII Declaration ↔ OEM Authorization Model Discrepancy</h3>
+<span class="font-code-tabular-sm text-code-tabular-sm px-1.5 py-0.5 rounded bg-surface-container text-secondary border border-outline-variant">PPO Order 2017</span>
+</div>
+<p class="font-body-md text-body-md text-secondary leading-relaxed">
+                    Make-in-India declaration specifies Switch Model Series X-500, whereas OEM Authorization references Model X-500-Pro. Confirmation required.
+                  </p>
+</div>
+</div>
+<div class="mt-3 pt-2.5 border-t border-outline-variant flex items-center justify-between">
+<span class="font-code-tabular-sm text-code-tabular-sm text-secondary">Triangulation: MII_Self_Cert.pdf vs MAF_Cisco.pdf</span>
+<button class="inline-flex items-center gap-1 font-label-md text-label-md font-semibold text-primary hover:text-on-primary-fixed-variant group" type="button">
+                  Inspect Cross-Document Match
+                  <span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-sm text-right">
+<a class="font-label-md text-label-md text-secondary hover:text-primary underline" href="#">View 2 minor secondary observations in Detailed Analysis</a>
+</div>
+</div>
+</section>
+<!-- SECTION 2: AI REVIEW & REASONING (Advisory Block) -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+<!-- Badge & Status Banner -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline-variant pb-space-md mb-space-md">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded bg-primary-container text-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+</span>
+<div>
+<div class="inline-flex items-center gap-2">
+<span class="font-label-md text-label-md font-semibold text-primary tracking-wide">
+                AI-GENERATED ADVISORY ASSESSMENT (Deterministic Rules Enforced by Human Officer)
+              </span>
+</div>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">Automated synthesis based on procurement guideline GFR 2017 / GeM Manual Cl. 12</p>
+</div>
+</div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#FEF8EC] text-[#B7791F] border border-[#FCD34D]">
+          RECOMMENDATION: REVIEW REQUIRED
+        </div>
+</div>
+<!-- Plain English Synthesis -->
+<div class="bg-surface-container-low rounded-lg p-space-md border border-outline-variant mb-space-lg">
+<p class="font-body-md text-body-md text-on-surface leading-relaxed font-normal">
+          The bidder satisfies all mandatory statutory registration, debarment, and minimum annual turnover criteria (<span class="font-code-tabular font-medium text-primary">₹250 Lakh</span> achieved vs <span class="font-code-tabular font-medium text-primary">₹100 Lakh</span> threshold). However, procurement officer review is required for the completion date verification in the past experience certificate, and model string alignment across the MII declaration and OEM authorization.
+        </p>
+</div>
+<!-- Bulleted Key Reasoning Points Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md mb-space-lg">
+<div class="flex items-start gap-2.5 p-space-sm rounded border border-outline-variant bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[#247A45] mt-0.5 icon-fill text-[18px]" data-icon="check_circle">check_circle</span>
+<div>
+<span class="font-label-md text-label-md font-semibold text-primary">Statutory Compliance</span>
+<p class="font-body-md text-body-md text-secondary">GSTIN active, 3-year IT returns filed, no CVC/GeM debarment records found in Central Master Database.</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-space-sm rounded border border-outline-variant bg-surface-container-lowest">
+<span class="material-symbols-outlined text-[#247A45] mt-0.5 icon-fill text-[18px]" data-icon="check_circle">check_circle</span>
+<div>
+<span class="font-label-md text-label-md font-semibold text-primary">Financial Threshold</span>
+<p class="font-body-md text-body-md text-secondary">Average turnover ₹250 Lakh exceeds ₹100 Lakh requirement by 150%. Audited balance sheets with valid UDIN confirmed.</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-space-sm rounded border border-[#FCD34D] bg-[#FEF8EC]/40">
+<span class="material-symbols-outlined text-[#B7791F] mt-0.5 icon-fill text-[18px]" data-icon="warning">warning</span>
+<div>
+<span class="font-label-md text-label-md font-semibold text-[#B7791F]">Past Experience Verification</span>
+<p class="font-body-md text-body-md text-secondary">1.92 years valid experience identified; completion milestone needs officer date sign-off due to missing date field.</p>
+</div>
+</div>
+<div class="flex items-start gap-2.5 p-space-sm rounded border border-[#FCD34D] bg-[#FEF8EC]/40">
+<span class="material-symbols-outlined text-[#B7791F] mt-0.5 icon-fill text-[18px]" data-icon="warning">warning</span>
+<div>
+<span class="font-label-md text-label-md font-semibold text-[#B7791F]">Local Content / OEM Triangulation</span>
+<p class="font-body-md text-body-md text-secondary">62% Class-I MII content met, but OEM authorization model string requires confirmation (Model X-500 vs X-500-Pro).</p>
+</div>
+</div>
+</div>
+<!-- Action Footer & Recommended Next Step -->
+<div class="border-t border-outline-variant pt-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-space-md">
+<div class="space-y-0.5">
+<div class="font-label-md text-label-md font-semibold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="arrow_right_alt">arrow_right_alt</span>
+            Recommended Next Step:
+            <span class="font-body-md text-secondary font-normal">Review the two flagged evidence items in Detailed Analysis prior to recording formal decision.</span>
+</div>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">
+            AI-generated advisory assessment. Final legal determination and award decision rests solely with the Procurement Officer.
+          </p>
+</div>
+<a class="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary font-label-md text-label-md hover:bg-surface-container-low transition-colors shrink-0" href="#">
+          View Detailed Reasoning &amp; Calculations
+          <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- SECTION 3: VERIFICATION COVERAGE & AUTOMATED PIPELINE -->
+<section class="space-y-space-md">
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-primary">VERIFICATION COVERAGE &amp; AUTOMATED PIPELINE</h2>
+<p class="font-body-md text-body-md text-secondary">End-to-end evidence ingestion, parsing, triangulation, and regulatory registry checks</p>
+</div>
+<!-- Pipeline Visualization (Horizontal Process Chain) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-md overflow-x-auto">
+<div class="min-w-[1050px] flex items-center justify-between">
+<!-- Node 1 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">1</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Document Intake</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] font-medium">7/7 ✓ PASS</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 2 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">2</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">OCR &amp; Extraction</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] font-medium">100% ✓ PASS</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 3 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">3</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Identity Verification</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] font-medium">4/4 ✓ PASS</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 4 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#FEF8EC] border border-[#FCD34D] text-[#B7791F] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">4</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Tender Eligibility Rules</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B7791F] font-semibold">12/13 ⚠ REVIEW</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 5 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#FEF8EC] border border-[#FCD34D] text-[#B7791F] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">5</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Cross-Doc Triangulation</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B7791F] font-semibold">2 Findings ⚠ REVIEW</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 6 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-[#EBFDF2] border border-[#A6F4C5] text-[#247A45] flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">6</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Statutory Registers</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] font-medium">4/4 ✓ PASS</div>
+</div>
+</div>
+<span class="text-outline-variant font-bold">→</span>
+<!-- Node 7 -->
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-surface-container border border-outline-variant text-secondary flex items-center justify-center font-code-tabular-sm text-[11px] font-bold">7</div>
+<div>
+<div class="font-label-md text-label-md font-semibold text-primary leading-tight">Officer Determination</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary font-medium">Pending Review</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Coverage Cards Grid (6 Clean Cards) -->
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Documents</div>
+<div class="font-code-tabular text-headline-md font-bold text-primary mt-1">7 / 7</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] mt-1 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check">check</span> Complete
+          </div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Identity</div>
+<div class="font-code-tabular text-headline-md font-bold text-primary mt-1">4 / 4</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] mt-1 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check">check</span> Verified
+          </div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest border border-[#FCD34D] rounded-lg p-3 bg-[#FEF8EC]/20">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Tender Rules</div>
+<div class="font-code-tabular text-headline-md font-bold text-primary mt-1">12 / 13</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B7791F] mt-1 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="warning">warning</span> 1 Pending Review
+          </div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Consistency</div>
+<div class="font-code-tabular text-headline-md font-bold text-primary mt-1">10 / 10</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] mt-1 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check">check</span> Arithmetic Validated
+          </div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-lowest border border-[#FCD34D] rounded-lg p-3 bg-[#FEF8EC]/20">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Cross-Document</div>
+<div class="font-code-tabular text-headline-md font-bold text-[#B7791F] mt-1">2</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#B7791F] mt-1 font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="warning">warning</span> Triangulation Audit
+          </div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-3">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary uppercase font-semibold">Statutory Registry</div>
+<div class="font-code-tabular text-headline-md font-bold text-primary mt-1">7 / 7</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-[#247A45] mt-1 font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check">check</span> Clear of Debarment
+          </div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: TENDER REQUIREMENT SUMMARY TABLE -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden">
+<div class="p-space-md border-b border-outline-variant flex items-center justify-between">
+<div>
+<h2 class="font-title-sm text-title-sm font-semibold text-primary">TENDER REQUIREMENT SUMMARY TABLE</h2>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">Pre-qualification criteria extracted against tender specification GEM/2026/B/8912041</p>
+</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary bg-surface-container-low px-2.5 py-1 rounded border border-outline-variant">
+          Rule Schema: General Financial Rules (GFR) 2017
+        </div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b-2 border-outline-variant text-[#334155] font-label-md text-[11px] uppercase tracking-wider font-semibold">
+<th class="py-2.5 px-4">Tender Requirement</th>
+<th class="py-2.5 px-4">Prescribed Condition</th>
+<th class="py-2.5 px-4">Extracted Bidder Value</th>
+<th class="py-2.5 px-4">Status</th>
+<th class="py-2.5 px-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md text-body-md">
+<!-- Row 1: Min Annual Turnover -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 font-medium text-primary">
+                Min Annual Turnover
+                <div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Clause 3.1 — Last 3 FY Audited Accounts</div>
+</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-secondary">≥ ₹100.00 Lakh</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-primary font-medium">
+                ₹250.00 Lakh <span class="font-body-md text-code-tabular-sm text-secondary">(Audited CA Balance Sheet)</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#EBFDF2] text-[#247A45] border border-[#A6F4C5]">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check_circle">check_circle</span>
+                  PASS
+                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low hover:text-primary" type="button">
+                  View Audit
+                </button>
+</td>
+</tr>
+<!-- Row 2: Past Experience in Domain -->
+<tr class="hover:bg-surface-container-low transition-colors bg-[#FEF8EC]/15 border-l-4 border-l-[#B7791F]">
+<td class="py-3 px-4 font-medium text-primary">
+                Past Experience in Domain
+                <div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Clause 4.2(b) — Similar Network Works</div>
+</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-secondary">≥ 1.0 Year</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-primary font-medium">
+                1.92 Years <span class="font-body-md text-code-tabular-sm text-secondary">(2 Work Orders)</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#FEF8EC] text-[#B7791F] border border-[#FCD34D]">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="warning">warning</span>
+                  REVIEW
+                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-[#FCD34D] bg-[#FEF8EC] text-[#B7791F] font-label-md text-label-md font-medium hover:bg-surface-container-lowest" type="button">
+                  View Finding
+                </button>
+</td>
+</tr>
+<!-- Row 3: Local Content (Make in India) -->
+<tr class="hover:bg-surface-container-low transition-colors bg-[#FEF8EC]/15 border-l-4 border-l-[#B7791F]">
+<td class="py-3 px-4 font-medium text-primary">
+                Local Content (Make in India)
+                <div class="font-code-tabular-sm text-code-tabular-sm text-secondary">DPIIT Public Procurement Order (Preference)</div>
+</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-secondary">≥ 50.0% (Class-I)</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-primary font-medium">
+                62.0% Declared <span class="font-body-md text-code-tabular-sm text-secondary">(Local Value Addition)</span>
+</td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#FEF8EC] text-[#B7791F] border border-[#FCD34D]">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="warning">warning</span>
+                  REVIEW
+                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-[#FCD34D] bg-[#FEF8EC] text-[#B7791F] font-label-md text-label-md font-medium hover:bg-surface-container-lowest" type="button">
+                  View Finding
+                </button>
+</td>
+</tr>
+<!-- Row 4: OEM Authorization Certificate -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 font-medium text-primary">
+                OEM Authorization Certificate
+                <div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Hardware Integrity Verification</div>
+</td>
+<td class="py-3 px-4 font-body-md text-body-md text-secondary">Mandatory for Network Hardware</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-primary font-medium">
+                Submitted &amp; Validated with Cisco OEM
+              </td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#EBFDF2] text-[#247A45] border border-[#A6F4C5]">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check_circle">check_circle</span>
+                  PASS
+                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low hover:text-primary" type="button">
+                  View Audit
+                </button>
+</td>
+</tr>
+<!-- Row 5: Earnest Money Deposit (EMD) -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="py-3 px-4 font-medium text-primary">
+                Earnest Money Deposit (EMD)
+                <div class="font-code-tabular-sm text-code-tabular-sm text-secondary">Rule 170 GFR 2017</div>
+</td>
+<td class="py-3 px-4 font-code-tabular text-code-tabular text-secondary">₹5,00,000 / Exemption</td>
+<td class="py-3 px-4 font-body-md text-body-md text-primary font-medium">
+                Valid MSME UDYAM Registration Exemption
+              </td>
+<td class="py-3 px-4">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded font-code-tabular-sm text-code-tabular-sm font-semibold bg-[#EBFDF2] text-[#247A45] border border-[#A6F4C5]">
+<span class="material-symbols-outlined text-[13px] icon-fill" data-icon="check_circle">check_circle</span>
+                  PASS
+                </span>
+</td>
+<td class="py-3 px-4 text-right">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low hover:text-primary" type="button">
+                  View Audit
+                </button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- SECTION 5: OFFICER FINAL DECISION CONSOLE -->
+<section class="bg-surface-container-lowest border-2 border-primary-container rounded-lg p-space-lg shadow-sm" id="officer-decision-console">
+<!-- Console Header -->
+<div class="border-b border-outline-variant pb-space-md mb-space-md flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div class="flex items-center gap-2.5">
+<span class="w-8 h-8 rounded bg-primary-container text-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="gavel">gavel</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md font-semibold text-primary">Officer Decision &amp; Tender Adjudication Console</h2>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary">Official Record of Proceedings under Delegation of Financial Powers</p>
+</div>
+</div>
+<div class="font-code-tabular-sm text-code-tabular-sm text-primary font-medium bg-surface-container-low px-3 py-1 rounded border border-outline-variant">
+          Adjudicating Officer: P. Sharma (ID: GOV-PO-2024-89)
+        </div>
+</div>
+<!-- Statutory Discretion Notice -->
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-3 mb-space-lg flex items-start gap-2.5 text-secondary">
+<span class="material-symbols-outlined text-primary mt-0.5 text-[18px]" data-icon="info">info</span>
+<div class="font-body-md text-body-md">
+<strong class="text-primary">Statutory Authority Notice:</strong> System Recommendation is Advisory (<span class="text-[#B7791F] font-semibold">REVIEW REQUIRED</span>). You possess statutory authority to Qualify, Reject, or Seek Clarification under GFR Rule 173. Every decision is logged into the indelible audit trail with cryptographic timestamping.
+        </div>
+</div>
+<!-- Interactive Officer Actions -->
+<div class="space-y-space-md">
+<!-- Decision Action Buttons (3 State Selectors) -->
+<div>
+<label class="block font-label-md text-label-md font-semibold text-primary mb-2">Select Determination Status:</label>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<!-- Approve / Qualify -->
+<button class="flex items-center justify-center gap-2 p-3 rounded-lg border-2 border-[#A6F4C5] bg-[#EBFDF2] hover:bg-[#d5f7e3] text-[#247A45] font-title-sm text-title-sm font-semibold transition-colors focus:ring-2 focus:ring-[#247A45] focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px] icon-fill" data-icon="check_circle">check_circle</span>
+              APPROVE / QUALIFY BIDDER
+            </button>
+<!-- Reject Bid -->
+<button class="flex items-center justify-center gap-2 p-3 rounded-lg border border-[#FCA5A5] bg-surface-container-lowest hover:bg-[#FEF2F2] text-[#B42318] font-title-sm text-title-sm font-semibold transition-colors focus:ring-2 focus:ring-[#B42318] focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="cancel">cancel</span>
+              REJECT BID
+            </button>
+<!-- Seek Clarification -->
+<button class="flex items-center justify-center gap-2 p-3 rounded-lg border border-[#FCD34D] bg-[#FEF8EC] hover:bg-[#faeecf] text-[#B7791F] font-title-sm text-title-sm font-semibold transition-colors focus:ring-2 focus:ring-[#B7791F] focus:outline-none" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
+              SEEK CLARIFICATION (72h Notice)
+            </button>
+</div>
+</div>
+<!-- Justification Text Area -->
+<div>
+<label class="block font-label-md text-label-md font-semibold text-primary mb-1" for="officer-justification">
+            Officer Compliance Notes &amp; Statutory Justification (Mandatory):
+          </label>
+<textarea class="w-full rounded border border-outline-variant bg-surface-container-lowest p-3 text-primary font-body-md text-body-md focus:border-primary-container focus:ring-1 focus:ring-primary-container" id="officer-justification" placeholder="Enter official procurement officer justification, compliance notes, and gazette order references..." rows="3"></textarea>
+<p class="font-code-tabular-sm text-code-tabular-sm text-secondary mt-1">Include references to vendor communications or verified original records where deviations are condoned.</p>
+</div>
+<!-- Affirmation Checkbox -->
+<div class="pt-1">
+<label class="flex items-start gap-2.5 cursor-pointer">
+<input class="mt-1 rounded border-outline-variant text-primary-container focus:ring-primary-container h-4 w-4" type="checkbox"/>
+<span class="font-body-md text-body-md text-primary font-medium">
+              I confirm that I have reviewed the supporting evidence, statutory registers, and flagged discrepancies. This decision is rendered in strict accordance with the tender conditions and GFR 2017.
+            </span>
+</label>
+</div>
+<!-- Submission Bar -->
+<div class="pt-space-md border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+<div class="font-code-tabular-sm text-code-tabular-sm text-secondary">
+            Digital Signature: <span class="font-semibold text-primary">DSC-TOKEN-CONNECTED (Class-III National Informatics Centre)</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="px-4 h-9 rounded-lg border border-outline-variant bg-surface-container-lowest text-secondary font-label-md text-label-md hover:bg-surface-container-low transition-colors" type="button">
+              Save Draft
+            </button>
+<button class="inline-flex items-center gap-2 px-5 h-9 rounded-lg bg-primary-container text-surface-container-lowest font-label-md text-label-md font-semibold hover:bg-primary transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-primary-container" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="lock">lock</span>
+              Record Officer Decision &amp; Sign Dossier
+            </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Government Portal Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant mt-space-2xl py-4">
+<div class="w-full max-w-[1600px] min-w-[1280px] mx-auto px-margin-desktop flex items-center justify-between text-secondary font-code-tabular-sm text-code-tabular-sm">
+<div class="flex items-center gap-4">
+<span>© 2026 National Public Procurement Portal. All Rights Reserved.</span>
+<span class="text-outline-variant">|</span>
+<span>Audit Standard: ISO/IEC 27001 &amp; GFR Rule 173</span>
+</div>
+<div class="flex items-center gap-4">
+<span>Server Time: <span class="text-primary font-medium">14-Oct-2026 14:38:12 IST</span></span>
+<span class="text-outline-variant">|</span>
+<span class="flex items-center gap-1 text-[#247A45] font-medium">
+<span class="w-2 h-2 rounded-full bg-[#247A45]"></span> Triangulation Core Online
+        </span>
+</div>
+</div>
+</footer>
+</body></html>
