@@ -130,16 +130,16 @@ function TenderApply() {
   return (
     <div className="max-w-5xl mx-auto pb-12 pt-8 px-4 sm:px-8">
       <div className="mb-6">
-        <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-navy-900 transition-colors font-medium">
+        <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-slate-900 transition-colors font-medium">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           Back to Dashboard
         </button>
       </div>
 
       <div className="bg-white border border-neutral-200 rounded-xl p-8 shadow-sm mb-8 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-1 h-full bg-navy-800"></div>
-        <span className="text-navy-900/50 font-mono text-xs tracking-widest uppercase mb-2 block">Tender Application</span>
-        <h1 className="text-3xl font-bold text-navy-900 tracking-tight mb-3">{tender.title}</h1>
+        <div className="absolute top-0 left-0 w-1 h-full bg-slate-800"></div>
+        <span className="text-slate-900/50 font-mono text-xs tracking-widest uppercase mb-2 block">Tender Application</span>
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight mb-3">{tender.title}</h1>
         <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500 font-mono">
           <span className="bg-neutral-100 px-3 py-1 rounded text-neutral-700 border border-neutral-200">{tender.tenderId}</span>
           <span className="flex items-center gap-1.5">
@@ -152,7 +152,7 @@ function TenderApply() {
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
           <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
-            <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <svg className="w-5 h-5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               Mandatory Documentation
             </h3>
@@ -177,7 +177,7 @@ function TenderApply() {
               return (
                 <div key={dt.value} className="px-4 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex-1">
-                    <span className="text-sm font-bold text-navy-900 tracking-wide block mb-1">{dt.label}</span>
+                    <span className="text-sm font-bold text-slate-900 tracking-wide block mb-1">{dt.label}</span>
                     {doc && <span className="text-xs text-success font-mono font-semibold bg-success/10 px-2 py-0.5 rounded border border-success/20">UPLOADED: {doc.originalFilename}</span>}
                   </div>
                   <div className="mt-2 sm:mt-0 flex shrink-0">
@@ -190,7 +190,7 @@ function TenderApply() {
                         Remove
                       </button>
                     ) : (
-                      <label className={`text-xs font-bold uppercase tracking-wider px-6 py-2.5 border rounded cursor-pointer transition-colors ${isUploading ? 'bg-neutral-100 text-neutral-400 border-neutral-200' : 'bg-white text-navy-900 border-neutral-300 hover:bg-neutral-50 shadow-sm'}`}>
+                      <label className={`text-xs font-bold uppercase tracking-wider px-6 py-2.5 border rounded cursor-pointer transition-colors ${isUploading ? 'bg-neutral-100 text-neutral-400 border-neutral-200' : 'bg-white text-slate-900 border-neutral-300 hover:bg-neutral-50 shadow-sm'}`}>
                         {isUploading ? "UPLOADING..." : "CHOOSE FILE"}
                         <input
                           type="file"
@@ -210,7 +210,7 @@ function TenderApply() {
 
         <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
           <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
-            <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <svg className="w-5 h-5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
               Business Declarations
             </h3>
@@ -227,7 +227,7 @@ function TenderApply() {
                   required
                   value={form.declaredLocalContentPercent}
                   onChange={(e) => update("declaredLocalContentPercent", e.target.value)}
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
               <div>
@@ -238,32 +238,32 @@ function TenderApply() {
                   required
                   value={form.declaredTurnoverLakhs}
                   onChange={(e) => update("declaredTurnoverLakhs", e.target.value)}
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
             </div>
 
             <div className="space-y-4">
-              <label className="flex items-start text-sm text-navy-900 font-medium group cursor-pointer">
+              <label className="flex items-start text-sm text-slate-900 font-medium group cursor-pointer">
                 <div className="relative flex items-center justify-center shrink-0 mt-0.5 mr-3">
                   <input
                     type="checkbox"
                     checked={form.isOemForOfferedCatalog}
                     onChange={(e) => update("isOemForOfferedCatalog", e.target.checked)}
-                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-navy-900 checked:border-navy-900 transition-colors"
+                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-slate-900 checked:border-slate-900 transition-colors"
                   />
                   <svg className={`absolute w-3.5 h-3.5 text-white pointer-events-none transition-opacity ${form.isOemForOfferedCatalog ? 'opacity-100' : 'opacity-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                 </div>
                 <span className="leading-relaxed">I declare that I am the Original Equipment Manufacturer (OEM) for the offered catalog(s) to avail MSE preference.</span>
               </label>
 
-              <label className="flex items-start text-sm text-navy-900 font-medium group cursor-pointer">
+              <label className="flex items-start text-sm text-slate-900 font-medium group cursor-pointer">
                 <div className="relative flex items-center justify-center shrink-0 mt-0.5 mr-3">
                   <input
                     type="checkbox"
                     checked={form.requestingEmdExemption}
                     onChange={(e) => update("requestingEmdExemption", e.target.checked)}
-                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-navy-900 checked:border-navy-900 transition-colors"
+                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-slate-900 checked:border-slate-900 transition-colors"
                   />
                   <svg className={`absolute w-3.5 h-3.5 text-white pointer-events-none transition-opacity ${form.requestingEmdExemption ? 'opacity-100' : 'opacity-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                 </div>
@@ -276,7 +276,7 @@ function TenderApply() {
                   <select
                     value={form.emdExemptionCategory}
                     onChange={(e) => update("emdExemptionCategory", e.target.value)}
-                    className="w-full sm:w-2/3 bg-white border border-neutral-200 text-navy-900 rounded-lg px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                    className="w-full sm:w-2/3 bg-white border border-neutral-200 text-slate-900 rounded-lg px-4 py-2 text-sm font-semibold focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                     required={form.requestingEmdExemption}
                   >
                     <option value="">-- Select Category --</option>
@@ -287,13 +287,13 @@ function TenderApply() {
                 </div>
               )}
 
-              <label className="flex items-start text-sm text-navy-900 font-medium group cursor-pointer">
+              <label className="flex items-start text-sm text-slate-900 font-medium group cursor-pointer">
                 <div className="relative flex items-center justify-center shrink-0 mt-0.5 mr-3">
                   <input
                     type="checkbox"
                     checked={form.miiCompliant}
                     onChange={(e) => update("miiCompliant", e.target.checked)}
-                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-navy-900 checked:border-navy-900 transition-colors"
+                    className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-slate-900 checked:border-slate-900 transition-colors"
                   />
                   <svg className={`absolute w-3.5 h-3.5 text-white pointer-events-none transition-opacity ${form.miiCompliant ? 'opacity-100' : 'opacity-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                 </div>
@@ -303,12 +303,12 @@ function TenderApply() {
               {form.miiCompliant && (
                 <div className="ml-8 mt-2 space-y-3 bg-neutral-50 border border-neutral-200 p-4 rounded-lg">
                   <label className="flex items-center text-sm text-neutral-700 cursor-pointer group">
-                    <input type="radio" name="miiClass" value="Class1" checked={form.miiClass === "Class1"} onChange={(e) => update("miiClass", e.target.value)} className="mr-3 w-4 h-4 text-navy-900 focus:ring-navy-900" />
-                    <span className="group-hover:text-navy-900 transition-colors">Participate as Class 1 Local Supplier (Local Content &gt;= 50%)</span>
+                    <input type="radio" name="miiClass" value="Class1" checked={form.miiClass === "Class1"} onChange={(e) => update("miiClass", e.target.value)} className="mr-3 w-4 h-4 text-slate-900 focus:ring-slate-900" />
+                    <span className="group-hover:text-slate-900 transition-colors">Participate as Class 1 Local Supplier (Local Content &gt;= 50%)</span>
                   </label>
                   <label className="flex items-center text-sm text-neutral-700 cursor-pointer group">
-                    <input type="radio" name="miiClass" value="Class2" checked={form.miiClass === "Class2"} onChange={(e) => update("miiClass", e.target.value)} className="mr-3 w-4 h-4 text-navy-900 focus:ring-navy-900" />
-                    <span className="group-hover:text-navy-900 transition-colors">Participate as Class 2 Local Supplier (Local Content 20% - 49%)</span>
+                    <input type="radio" name="miiClass" value="Class2" checked={form.miiClass === "Class2"} onChange={(e) => update("miiClass", e.target.value)} className="mr-3 w-4 h-4 text-slate-900 focus:ring-slate-900" />
+                    <span className="group-hover:text-slate-900 transition-colors">Participate as Class 2 Local Supplier (Local Content 20% - 49%)</span>
                   </label>
                 </div>
               )}
@@ -327,7 +327,7 @@ function TenderApply() {
           <button
             type="submit"
             disabled={submitting}
-            className="bg-navy-900 text-white px-8 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase hover:bg-navy-800 disabled:opacity-50 transition-colors shadow-md flex items-center justify-center gap-2 w-full sm:w-auto"
+            className="bg-slate-900 text-white px-8 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase hover:bg-slate-800 disabled:opacity-50 transition-colors shadow-md flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             {submitting ? (
                <>

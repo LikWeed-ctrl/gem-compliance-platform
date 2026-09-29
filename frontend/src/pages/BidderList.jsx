@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getBiddersByTender } from "../api/bidders";
+import { getBiddersByTender, getAuditTrail } from "../api/bidders";
 import { getTenderById } from "../api/tenders";
 
 const RISK_STYLES = {
@@ -15,6 +15,73 @@ const DECISION_STYLES = {
   DISQUALIFIED: "bg-error/10 text-error border-error/20",
   CLARIFICATION_REQUESTED: "bg-warning/10 text-warning border-warning/20",
 };
+
+function DecisionJustification({ bidder }) {
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [text, setText] = useState(null);
+
+  // Use a justification stored on the bidder if the API returns one
+  const inline =
+    bidder.officerReasoning ||
+    bidder.officerJustification ||
+    bidder.decisionReason ||
+    bidder.decisionReasoning ||
+    bidder.officerRemarks ||
+    bidder.reasoning;
+
+  const toggle = async () => {
+    const next = !open;
+    setOpen(next);
+    if (!next || text !== null) return;
+
+    if (inline) {
+      setText(inline);
+      return;
+    }
+
+    // Otherwise fall back to the audit trail entry recorded with the decision
+    setLoading(true);
+    try {
+      const logs = await getAuditTrail(bidder._id);
+      const withReason = [...logs]
+        .filter((l) => l.reason)
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      const decisionLog =
+        withReason.find((l) => /decision|qualif/i.test(`${l.actionType} ${l.description}`)) ||
+        withReason[0];
+      setText(decisionLog?.reason || "");
+    } catch {
+      setText("");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-2 flex flex-col items-start gap-2">
+      <button
+        type="button"
+        onClick={toggle}
+        className="inline-flex items-center gap-1 text-[11px] font-semibold text-slate-800 hover:text-slate-900 underline-offset-2 hover:underline"
+      >
+        {open ? "Hide justification" : "View justification"}
+        <svg className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+      </button>
+      {open && (
+        <div className="max-w-xs text-xs text-neutral-600 bg-neutral-50 border border-neutral-200 rounded-md p-2.5 leading-relaxed whitespace-pre-wrap break-words">
+          {loading ? (
+            <span className="font-mono text-neutral-400 animate-pulse">Loading...</span>
+          ) : text ? (
+            text
+          ) : (
+            <span className="text-neutral-400">No justification recorded.</span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function BidderList() {
   const { tenderId } = useParams();
@@ -39,21 +106,21 @@ function BidderList() {
   return (
     <div className="max-w-7xl mx-auto pb-12">
       <div className="mb-6">
-        <Link to="/officer" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-navy-900 transition-colors font-medium">
+        <Link to="/officer" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-slate-900 transition-colors font-medium">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
           Back to Tenders
         </Link>
       </div>
 
       {tender && (
-        <div className="bg-navy-900 rounded-xl p-8 shadow-lg mb-8 relative overflow-hidden border border-navy-800">
+        <div className="bg-slate-900 rounded-xl p-8 shadow-lg mb-8 relative overflow-hidden border border-slate-800">
           <div className="absolute top-0 left-0 w-1 h-full bg-gold-600"></div>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
             <div>
               <span className="text-gold-500 font-mono text-xs tracking-widest uppercase mb-2 block">Evaluation Workspace</span>
               <h1 className="text-2xl font-bold text-white mb-2">{tender.title}</h1>
               <div className="flex items-center gap-4 text-sm text-neutral-400">
-                <span className="font-mono bg-navy-800 px-2 py-0.5 rounded text-neutral-300 border border-navy-700">{tender.tenderId}</span>
+                <span className="font-mono bg-slate-800 px-2 py-0.5 rounded text-neutral-300 border border-slate-700">{tender.tenderId}</span>
                 <span className="flex items-center gap-1.5">
                   <svg className="w-4 h-4 text-neutral-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
                   {tender.department}
@@ -90,7 +157,7 @@ function BidderList() {
                 <tr key={bidder._id} className="hover:bg-neutral-50/50 transition-colors">
                   <td className="px-6 py-5">
                     <div className="flex flex-col gap-1">
-                      <span className="font-semibold text-navy-900 text-base">{bidder.sellerProfile.companyName}</span>
+                      <span className="font-semibold text-slate-900 text-base">{bidder.sellerProfile.companyName}</span>
                       <span className="text-xs text-neutral-500 font-mono">{bidder.sellerProfile.panNumber}</span>
                       
                       {/* Flag logic */}
@@ -111,7 +178,7 @@ function BidderList() {
                   <td className="px-6 py-5 text-center">
                     {bidder.complianceScore !== null ? (
                       <div className="flex flex-col items-center">
-                        <span className={`text-xl font-bold font-mono ${bidder.complianceScore < 50 ? "text-error" : "text-navy-900"}`}>{bidder.complianceScore}</span>
+                        <span className={`text-xl font-bold font-mono ${bidder.complianceScore < 50 ? "text-error" : "text-slate-900"}`}>{bidder.complianceScore}</span>
                         <span className="text-[10px] text-neutral-500 uppercase tracking-widest">/ 100</span>
                       </div>
                     ) : (
@@ -128,14 +195,17 @@ function BidderList() {
                     )}
                   </td>
                   <td className="px-6 py-5">
-                    <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider border ${DECISION_STYLES[bidder.officerDecision]}`}>
-                      {bidder.officerDecision.replace("_", " ")}
-                    </span>
+                    <div className="flex flex-col items-start">
+                      <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider border ${DECISION_STYLES[bidder.officerDecision]}`}>
+                        {bidder.officerDecision.replace("_", " ")}
+                      </span>
+                      {bidder.officerDecision !== "PENDING" && <DecisionJustification bidder={bidder} />}
+                    </div>
                   </td>
                   <td className="px-6 py-5 text-right">
                     <Link
                       to={`/officer/bidders/${bidder._id}`}
-                      className="inline-flex items-center gap-1 bg-white border border-neutral-200 text-navy-900 hover:bg-neutral-50 hover:border-navy-200 px-4 py-2 rounded text-sm font-semibold transition-all shadow-sm"
+                      className="inline-flex items-center gap-1 bg-white border border-neutral-200 text-slate-900 hover:bg-neutral-50 hover:border-slate-200 px-4 py-2 rounded text-sm font-semibold transition-all shadow-sm"
                     >
                       Verify Compliance <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                     </Link>

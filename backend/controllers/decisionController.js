@@ -1,5 +1,6 @@
 const BidSubmission = require("../models/BidSubmission");
 const AuditLog = require("../models/AuditLog");
+const Tender = require("../models/Tender");
 
 const VALID_DECISIONS = ["QUALIFIED", "DISQUALIFIED", "CLARIFICATION_REQUESTED"];
 
@@ -35,6 +36,10 @@ async function recordOfficerDecision(req, res) {
     bid.officerDecidedAt = new Date();
     bid.officerId = officerId.trim();
     await bid.save();
+
+    if (decision === "QUALIFIED") {
+      await Tender.findByIdAndUpdate(bid.tender, { isActive: false });
+    }
 
     // always log the decision itself
     await AuditLog.create({

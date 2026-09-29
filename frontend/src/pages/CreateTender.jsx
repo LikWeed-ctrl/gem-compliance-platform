@@ -6,6 +6,7 @@ function CreateTender() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const today = new Date().toISOString().split('T')[0];
 
   const [form, setForm] = useState({
     tenderId: "",
@@ -52,7 +53,7 @@ function CreateTender() {
       };
 
       await createTender(payload);
-      navigate("/officer/dashboard");
+      navigate("/officer");
     } catch (err) {
       setError(err.response?.data?.error || err.message);
     } finally {
@@ -63,7 +64,7 @@ function CreateTender() {
   return (
     <div className="max-w-5xl mx-auto pb-12 pt-8 px-4 sm:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-navy-900 tracking-tight">Create New Tender</h1>
+        <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Create New Tender</h1>
         <p className="text-neutral-500 mt-2 font-mono text-sm">Define procurement rules, eligibility, and required documentation.</p>
       </div>
 
@@ -72,7 +73,7 @@ function CreateTender() {
         {/* Section 1 */}
         <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
           <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
-            <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <svg className="w-5 h-5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
               1. Basic Information
             </h3>
@@ -86,7 +87,7 @@ function CreateTender() {
                   value={form.tenderId}
                   onChange={(e) => update("tenderId", e.target.value)}
                   placeholder="e.g. GEM/2026/B/12345"
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
               <div>
@@ -96,7 +97,7 @@ function CreateTender() {
                   value={form.department}
                   onChange={(e) => update("department", e.target.value)}
                   placeholder="Ministry of Railways"
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-sans focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-sans focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
               
@@ -107,7 +108,7 @@ function CreateTender() {
                   value={form.title}
                   onChange={(e) => update("title", e.target.value)}
                   placeholder="Supply of Office Furniture"
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-sans focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-sans focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
 
@@ -116,9 +117,10 @@ function CreateTender() {
                 <input
                   required
                   type="date"
+                  min={today}
                   value={form.bidSubmissionDeadline}
                   onChange={(e) => update("bidSubmissionDeadline", e.target.value)}
-                  className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
             </div>
@@ -128,7 +130,7 @@ function CreateTender() {
         {/* Section 2 */}
         <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
           <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
-            <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <svg className="w-5 h-5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
               2. Eligibility Rules
             </h3>
@@ -143,13 +145,13 @@ function CreateTender() {
                 { id: "nsicEmdWaiverApplicable", label: "NSIC EMD Waiver applicable" },
                 { id: "startupIndiaRelaxation", label: "Startup India relaxation applicable" }
               ].map(rule => (
-                <label key={rule.id} className="flex items-start text-sm text-navy-900 font-medium group cursor-pointer bg-neutral-50 p-4 rounded-lg border border-neutral-200 hover:border-navy-900/30 transition-colors">
+                <label key={rule.id} className="flex items-start text-sm text-slate-900 font-medium group cursor-pointer bg-neutral-50 p-4 rounded-lg border border-neutral-200 hover:border-slate-900/30 transition-colors">
                   <div className="relative flex items-center justify-center shrink-0 mt-0.5 mr-3">
                     <input
                       type="checkbox"
                       checked={form[rule.id]}
                       onChange={(e) => update(rule.id, e.target.checked)}
-                      className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-navy-900 checked:border-navy-900 transition-colors"
+                      className="appearance-none w-5 h-5 border-2 border-neutral-300 rounded focus:ring-0 checked:bg-slate-900 checked:border-slate-900 transition-colors"
                     />
                     <svg className={`absolute w-3.5 h-3.5 text-white pointer-events-none transition-opacity ${form[rule.id] ? 'opacity-100' : 'opacity-0'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                   </div>
@@ -158,9 +160,9 @@ function CreateTender() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-navy-50 p-6 rounded-lg border border-navy-100">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-lg border border-slate-100">
               <div>
-                <label className="block text-xs font-bold text-navy-900 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-bold text-slate-900 uppercase tracking-widest mb-2">
                   Min. Make in India local content (%)
                 </label>
                 <input
@@ -170,11 +172,11 @@ function CreateTender() {
                   value={form.makeInIndiaMinPercent}
                   onChange={(e) => update("makeInIndiaMinPercent", e.target.value)}
                   placeholder="Optional"
-                  className="w-full bg-white border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-white border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-navy-900 uppercase tracking-widest mb-2">
+                <label className="block text-xs font-bold text-slate-900 uppercase tracking-widest mb-2">
                   Min. Turnover (₹ lakhs)
                 </label>
                 <input
@@ -183,7 +185,7 @@ function CreateTender() {
                   value={form.minTurnoverLakhs}
                   onChange={(e) => update("minTurnoverLakhs", e.target.value)}
                   placeholder="Optional"
-                  className="w-full bg-white border border-neutral-200 text-navy-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                  className="w-full bg-white border border-neutral-200 text-slate-900 rounded-lg px-4 py-2.5 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 />
               </div>
             </div>
@@ -193,7 +195,7 @@ function CreateTender() {
         {/* Section 3 */}
         <div className="bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm">
           <div className="bg-neutral-50 border-b border-neutral-200 px-6 py-4">
-            <h3 className="text-lg font-bold text-navy-900 flex items-center gap-2">
+            <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
               <svg className="w-5 h-5 text-gold-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
               3. Required Documents
             </h3>
@@ -212,7 +214,7 @@ function CreateTender() {
                 { id: "EMD_EXEMPTION_SUPPORTING_DOC", label: "EMD Exemption" },
                 { id: "ATC_ADDITIONAL_DOC", label: "ATC / Additional" }
               ].map(doc => (
-                <label key={doc.id} className={`flex items-start text-xs font-bold uppercase tracking-wider cursor-pointer p-3 rounded-lg border transition-all ${form.requiredDocuments?.includes(doc.id) ? 'bg-navy-900 text-white border-navy-900 shadow-md' : 'bg-white text-neutral-500 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50'}`}>
+                <label key={doc.id} className={`flex items-start text-xs font-bold uppercase tracking-wider cursor-pointer p-3 rounded-lg border transition-all ${form.requiredDocuments?.includes(doc.id) ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-white text-neutral-500 border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50'}`}>
                   <input
                     type="checkbox"
                     checked={form.requiredDocuments?.includes(doc.id)}
@@ -225,7 +227,7 @@ function CreateTender() {
                   />
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${form.requiredDocuments?.includes(doc.id) ? 'border-white bg-white' : 'border-neutral-300 bg-transparent'}`}>
-                       {form.requiredDocuments?.includes(doc.id) && <div className="w-2 h-2 rounded-full bg-navy-900" />}
+                       {form.requiredDocuments?.includes(doc.id) && <div className="w-2 h-2 rounded-full bg-slate-900" />}
                     </div>
                     {doc.label}
                   </div>
@@ -247,7 +249,7 @@ function CreateTender() {
           <button
             type="submit"
             disabled={submitting}
-            className="bg-navy-900 text-white px-8 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase hover:bg-navy-800 disabled:opacity-50 transition-colors shadow-md flex items-center justify-center gap-2 w-full sm:w-auto"
+            className="bg-slate-900 text-white px-8 py-3.5 rounded-xl text-sm font-bold tracking-wider uppercase hover:bg-slate-800 disabled:opacity-50 transition-colors shadow-md flex items-center justify-center gap-2 w-full sm:w-auto"
           >
             {submitting ? (
                <>

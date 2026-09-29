@@ -2,6 +2,17 @@ const Tender = require("../models/Tender");
 
 async function createTender(req, res) {
   try {
+    const { bidSubmissionDeadline } = req.body;
+    if (bidSubmissionDeadline) {
+      const deadlineDate = new Date(bidSubmissionDeadline);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      if (deadlineDate < today) {
+        return res.status(400).json({ error: "Bid submission deadline cannot be in the past" });
+      }
+    }
+
     const tender = await Tender.create(req.body);
     res.status(201).json(tender);
   } catch (err) {

@@ -4,6 +4,8 @@ import { useNavigate, Link } from "react-router-dom";
 function BidderSignup() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    email: "",
+    password: "",
     companyName: "",
     panNumber: "",
     gstin: "",
@@ -23,15 +25,16 @@ function BidderSignup() {
     setLoading(true);
     
     try {
-      const res = await fetch("http://localhost:5000/api/seller-profiles/register", {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, role: "SELLER" }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to sign up");
 
-      localStorage.setItem("sellerProfileId", data.sellerProfile._id);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("sellerProfileId", data.sellerProfileId);
       navigate("/bidder/dashboard");
     } catch (err) {
       setError(err.message);
@@ -44,19 +47,48 @@ function BidderSignup() {
     <div className="py-16 px-4 flex justify-center">
       <div className="bg-white p-10 rounded-2xl border border-neutral-200 w-full max-w-xl shadow-card relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1.5 bg-gold-600"></div>
-        <h1 className="text-3xl font-bold text-navy-900 mb-2 tracking-tight">Vendor Registration</h1>
+        <Link to="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-slate-900 transition-colors mb-6">
+          <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+          Back to Home
+        </Link>
+        <h1 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">Vendor Registration</h1>
         <p className="text-sm text-neutral-500 mb-8 font-mono">
           Enter corporate profile details. System will verify data against GSTN, PAN, and Udyam portals automatically.
         </p>
 
         <form onSubmit={handleSignup} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">Email *</label>
+              <input
+                required
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-sans focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
+                placeholder="vendor@example.com"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">Password *</label>
+              <input
+                required
+                type="password"
+                value={form.password}
+                onChange={(e) => update("password", e.target.value)}
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-sans focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+
           <div>
             <label className="block text-xs font-bold text-neutral-500 uppercase tracking-widest mb-2">Company Name *</label>
             <input
               required
               value={form.companyName}
               onChange={(e) => update("companyName", e.target.value)}
-              className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-sans focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+              className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-sans focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
               placeholder="Bharat Engineering Works Pvt Ltd"
             />
           </div>
@@ -68,7 +100,7 @@ function BidderSignup() {
                 required
                 value={form.panNumber}
                 onChange={(e) => update("panNumber", e.target.value.toUpperCase())}
-                className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 placeholder="ABCDE1234F"
               />
             </div>
@@ -77,7 +109,7 @@ function BidderSignup() {
               <input
                 value={form.gstin}
                 onChange={(e) => update("gstin", e.target.value.toUpperCase())}
-                className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 placeholder="Optional"
               />
             </div>
@@ -89,7 +121,7 @@ function BidderSignup() {
               <input
                 value={form.udyamNumber}
                 onChange={(e) => update("udyamNumber", e.target.value.toUpperCase())}
-                className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 placeholder="Optional"
               />
             </div>
@@ -98,7 +130,7 @@ function BidderSignup() {
               <input
                 value={form.cin}
                 onChange={(e) => update("cin", e.target.value.toUpperCase())}
-                className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+                className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono tracking-widest focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
                 placeholder="Optional"
               />
             </div>
@@ -115,7 +147,7 @@ function BidderSignup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-navy-900 text-white px-4 py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider hover:bg-navy-800 disabled:opacity-50 transition-colors shadow-md flex justify-center items-center gap-2"
+              className="w-full bg-slate-900 text-white px-4 py-3.5 rounded-xl text-sm font-bold uppercase tracking-wider hover:bg-slate-800 disabled:opacity-50 transition-colors shadow-md flex justify-center items-center gap-2"
             >
               {loading ? (
                 <>
@@ -128,7 +160,7 @@ function BidderSignup() {
         </form>
         
         <p className="text-sm text-neutral-500 mt-8 text-center border-t border-neutral-100 pt-6">
-          Already have a profile? <Link to="/bidder/login" className="text-navy-900 font-bold hover:text-gold-600 hover:underline transition-colors">Login securely</Link>
+          Already have a profile? <Link to="/bidder/login" className="text-slate-900 font-bold hover:text-gold-600 hover:underline transition-colors">Login securely</Link>
         </p>
       </div>
     </div>

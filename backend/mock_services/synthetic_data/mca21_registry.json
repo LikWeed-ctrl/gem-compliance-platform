@@ -38,5 +38,17 @@
   "U72900MH2020PTC123456": {
     "companyName": "Generic Demo MCA21",
     "status": "Active"
+  },
+  "U12345MH2010PTC123456": {
+    "companyName": "PetroTech Solutions",
+    "status": "Active"
+  },
+  "U98765MH2015PTC987654": {
+    "companyName": "Bharat Oil & Gas Services",
+    "status": "Active"
+  },
+  "U45678MH2020PTC456789": {
+    "companyName": "Global DrillCorp",
+    "status": "Active"
   }
 }

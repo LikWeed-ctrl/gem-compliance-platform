@@ -138,5 +138,17 @@
   "ABCDE1234F": {
     "fullName": "Generic Demo PAN",
     "status": "Active"
+  },
+  "PETRO1234F": {
+    "name": "PetroTech Solutions",
+    "status": "Active"
+  },
+  "BHART9876G": {
+    "name": "Bharat Oil & Gas Services",
+    "status": "Active"
+  },
+  "GLOBE4567H": {
+    "name": "Global DrillCorp",
+    "status": "Active"
   }
 }

@@ -22,6 +22,10 @@ function BidderLogin() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to login");
 
+      if (data.role !== "SELLER") {
+        throw new Error("This account is not registered as a seller/bidder.");
+      }
+
       localStorage.setItem("sellerProfileId", data.sellerProfileId);
       localStorage.setItem("token", data.token); // Save JWT
       navigate("/bidder/dashboard");
@@ -35,8 +39,12 @@ function BidderLogin() {
   return (
     <div className="flex items-center justify-center p-4 py-24">
       <div className="bg-white p-10 rounded-2xl border border-neutral-200 w-full max-w-md shadow-card relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1.5 bg-navy-900"></div>
-        <h1 className="text-3xl font-bold text-navy-900 mb-2 tracking-tight">Bidder Login</h1>
+        <div className="absolute top-0 left-0 w-full h-1.5 bg-slate-900"></div>
+        <Link to="/" className="inline-flex items-center text-sm font-medium text-neutral-500 hover:text-slate-900 transition-colors mb-6">
+          <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+          Back to Home
+        </Link>
+        <h1 className="text-3xl font-bold text-slate-900 mb-2 tracking-tight">Bidder Login</h1>
         <p className="text-sm text-neutral-500 mb-8 font-mono">Authenticate with your registered Email and Password.</p>
 
         <form onSubmit={handleLogin} className="space-y-6">
@@ -47,7 +55,7 @@ function BidderLogin() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+              className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
               placeholder="vendor@example.com"
             />
           </div>
@@ -58,7 +66,7 @@ function BidderLogin() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-neutral-50 border border-neutral-200 text-navy-900 rounded-lg px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-navy-900/20 focus:border-navy-900 transition-all outline-none"
+              className="w-full bg-neutral-50 border border-neutral-200 text-slate-900 rounded-lg px-4 py-3 text-sm font-mono focus:ring-2 focus:ring-slate-900/20 focus:border-slate-900 transition-all outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -73,7 +81,7 @@ function BidderLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-navy-900 text-white px-4 py-3.5 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-navy-800 disabled:opacity-50 transition-colors shadow-md flex justify-center items-center gap-2"
+            className="w-full bg-slate-900 text-white px-4 py-3.5 rounded-lg text-sm font-bold uppercase tracking-wider hover:bg-slate-800 disabled:opacity-50 transition-colors shadow-md flex justify-center items-center gap-2"
           >
             {loading ? (
               <>

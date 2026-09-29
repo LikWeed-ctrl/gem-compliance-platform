@@ -5,14 +5,13 @@ export default {
     extend: {
       colors: {
         navy: {
-          50: '#F0F4F8',
-          100: '#D9E2EC',
-          800: '#1B2A3E', // Sidebar / Dark Panels
-          900: '#162235', // Primary Dark / Deep Navy
+          900: '#162235', // Original dark navy for hero overlay
         },
         gold: {
-          500: '#D4A64A',
-          600: '#C6922E', // Accent Government Gold
+          400: '#EAB308', // yellow-500 equivalent
+          500: '#D97706', // amber-600 equivalent / gold
+          600: '#C28B00', // darker gold
+          700: '#A16207', 
         },
         neutral: {
           50: '#F4F5F2', // Soft neutral gray background
@@ -20,7 +19,7 @@ export default {
           500: '#66758A', // Text Secondary
         },
         success: '#2E7D32', // Muted professional green
-        warning: '#D4A64A', // Amber/gold
+        warning: '#F89880', // Amber/gold
         error: '#C62828', // Muted professional red
         info: '#1565C0', // Muted blue
       },

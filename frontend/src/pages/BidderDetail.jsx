@@ -1,4 +1,5 @@
 import api from "../api/client";
+import OfficerDecisionModal from "../components/BidderVerification/OfficerDecisionModal";
 import AuditTrail from "../components/AuditTrail";
 import { useEffect, useState, Fragment } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -165,7 +166,7 @@ const EvidenceBlock = ({ evidence, title = "Evidence", defaultExpanded = false }
 };
 
 // A. HEADER
-const HeaderSection = ({ bidder, runningChecks, onRunChecks }) => (
+const HeaderSection = ({ bidder, runningChecks, onRunChecks, onOpenDecision }) => (
   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
     <div>
       <div className="flex items-center gap-3 mb-2">
@@ -184,14 +185,23 @@ const HeaderSection = ({ bidder, runningChecks, onRunChecks }) => (
         {bidder.sellerProfile.gstin && <span>GSTIN: <strong>{bidder.sellerProfile.gstin}</strong></span>}
       </div>
     </div>
-    <button
-      onClick={onRunChecks}
-      disabled={runningChecks}
-      className="px-6 py-3 rounded-lg text-[14px] font-bold tracking-widest uppercase transition-colors disabled:opacity-50"
-      style={{ backgroundColor: PALETTE.primary, color: PALETTE.white }}
-    >
-      {runningChecks ? "Running Analysis..." : "Trigger Verification Engine"}
-    </button>
+    <div className="flex flex-col gap-3 w-full md:w-auto">
+      <button
+        onClick={onRunChecks}
+        disabled={runningChecks}
+        className="px-6 py-3 rounded-lg text-[14px] font-bold tracking-widest uppercase transition-colors disabled:opacity-50"
+        style={{ backgroundColor: PALETTE.primary, color: PALETTE.white }}
+      >
+        {runningChecks ? "Running Analysis..." : "Trigger Verification Engine"}
+      </button>
+      <button
+        onClick={onOpenDecision}
+        className="px-6 py-3 rounded-lg text-[14px] font-bold tracking-widest uppercase transition-colors hover:opacity-90"
+        style={{ backgroundColor: PALETTE.white, color: PALETTE.primary, border: `2px solid ${PALETTE.primary}` }}
+      >
+        Record Final Decision
+      </button>
+    </div>
   </div>
 );
 
@@ -931,7 +941,7 @@ const VerificationDetailsViewer = ({ document }) => {
 
               {(f.evidence || f.rawResponse) ? (
                  <div className="mt-2 pt-4 border-t" style={{ borderColor: PALETTE.neutral.border }}>
-                   <EvidenceBlock evidence={f.evidence || f.rawResponse} title="Details" defaultExpanded={true} />
+                   <EvidenceBlock evidence={f.evidence || f.rawResponse} title="Details" />
                  </div>
               ) : (
                  <div className="mt-2 pt-4 border-t" style={{ borderColor: PALETTE.neutral.border }}>
@@ -1159,84 +1169,6 @@ const DocumentRepository = ({ documents }) => {
   );
 };
 
-// M. OFFICER DECISION
-const OfficerDecision = ({ decisionProps }) => {
-  const { decision, setDecision, reason, setReason, submitting, decisionError, onSubmit, currentDecision } = decisionProps;
-  
-  // Read-only Officer Session
-  const officerSessionId = "officer.auth@gem.gov.in";
-
-  return (
-    <Card className="mb-10 p-8 border-t-[4px]" style={{ borderTopColor: PALETTE.accent }}>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 pb-4" style={{ borderBottom: `1px solid ${PALETTE.neutral.border}` }}>
-        <div>
-          <h2 className="text-[20px] md:text-[22px] font-bold" style={{ color: PALETTE.primary }}>Officer Final Decision</h2>
-          <p className="text-[14px] mt-1" style={{ color: PALETTE.neutral.secondary }}>
-            Current status: <span className="font-bold uppercase tracking-wide" style={{ color: PALETTE.primary }}>{currentDecision.replace(/_/g, " ")}</span>
-          </p>
-        </div>
-      </div>
-      <form onSubmit={onSubmit} className="max-w-2xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <label className="block text-[13px] font-bold uppercase tracking-wide mb-2" style={{ color: PALETTE.neutral.secondary }}>Decision</label>
-            <select
-              value={decision}
-              onChange={(e) => setDecision(e.target.value)}
-              className="w-full bg-[#F5F7FA] border border-[#D9E0E8] rounded-lg px-4 py-2.5 text-[15px] font-bold outline-none"
-              style={{ color: PALETTE.primary }}
-            >
-              <option value="PENDING">PENDING</option>
-              <option value="QUALIFIED">QUALIFY (APPROVE)</option>
-              <option value="DISQUALIFIED">DISQUALIFY (REJECT)</option>
-              <option value="CLARIFICATION_REQUESTED">REQUEST CLARIFICATION</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-[13px] font-bold uppercase tracking-wide mb-2" style={{ color: PALETTE.neutral.secondary }}>Authenticated Officer Session</label>
-            <div
-              className="w-full bg-[#E2E8F0] border border-[#D9E0E8] rounded-lg px-4 py-2.5 text-[15px] font-mono cursor-not-allowed select-none"
-              style={{ color: PALETTE.neutral.secondary }}
-            >
-              {officerSessionId}
-            </div>
-          </div>
-        </div>
-        <div className="mb-6">
-          <label className="block text-[13px] font-bold uppercase tracking-wide mb-2" style={{ color: PALETTE.neutral.secondary }}>
-            Justification
-          </label>
-          <textarea
-            required
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            rows={3}
-            placeholder="Provide official rationale for this decision..."
-            className="w-full bg-[#F5F7FA] border border-[#D9E0E8] rounded-lg px-4 py-3 text-[15px] outline-none resize-y"
-            style={{ color: PALETTE.primary }}
-          />
-          <p className="text-[13px] mt-1.5" style={{ color: PALETTE.neutral.secondary }}>Officer decision is recorded in the audit trail securely under your identity.</p>
-        </div>
-        {decisionError && (
-          <div className="mb-6 p-3 rounded-md text-[14px] font-bold" style={{ backgroundColor: PALETTE.fail.bg, color: PALETTE.fail.text, border: `1px solid ${PALETTE.fail.text}33` }}>
-            {decisionError}
-          </div>
-        )}
-        <button
-          type="submit"
-          disabled={submitting}
-          className="px-8 py-3 rounded-lg text-[14px] font-bold tracking-widest uppercase transition-colors shadow-sm w-full sm:w-auto hover:opacity-90"
-          style={{ backgroundColor: PALETTE.primary, color: PALETTE.white }}
-        >
-          {submitting ? "RECORDING..." : "COMMIT DECISION"}
-        </button>
-      </form>
-    </Card>
-  );
-};
-
-// --- MAIN PAGE COMPONENT ---
-
 // --- DETAILED ANALYSIS COMPONENTS ---
 
 const TenderRequirementAudit = ({ flatChecks }) => {
@@ -1296,7 +1228,6 @@ const TenderRequirementAudit = ({ flatChecks }) => {
   );
 };
 
-// 2. Identity & Statutory Registry Verification
 // 2. Identity & Statutory Registry Verification
 const IdentityStatutoryVerification = ({ flatChecks }) => {
   let idChecks = flatChecks.filter(c => 
@@ -1661,14 +1592,6 @@ const StatutoryChecks = ({ flatChecks }) => {
     );
   }
 
-  const getFriendlySourceName = (source) => {
-      let base = source || "System Check";
-      let isDemo = base.toLowerCase().includes("demo") || base.toLowerCase().includes("simulated") || base.toLowerCase().includes("mock");
-      if (base.toLowerCase().includes("registry") && !isDemo) {
-         base += " (Demo / Simulated Registry)";
-      }
-      return base;
-  };
 
   return (
     <div className="mb-10">
@@ -1680,9 +1603,7 @@ const StatutoryChecks = ({ flatChecks }) => {
               <tr style={{ backgroundColor: PALETTE.bg, borderBottom: `1px solid ${PALETTE.neutral.border}` }}>
                 <th className="px-5 py-3 text-[12px] font-bold uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>Check</th>
                 <th className="px-5 py-3 text-[12px] font-bold uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>Status</th>
-                <th className="px-5 py-3 text-[12px] font-bold uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>Source</th>
                 <th className="px-5 py-3 text-[12px] font-bold uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>Result / Reason</th>
-                <th className="px-5 py-3 text-[12px] font-bold uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>Evidence</th>
               </tr>
             </thead>
             <tbody>
@@ -1694,14 +1615,17 @@ const StatutoryChecks = ({ flatChecks }) => {
                   <td className="px-5 py-4 align-top pt-4">
                     <StatusBadge status={c.status} />
                   </td>
-                  <td className="px-5 py-4 align-top text-[12px] uppercase tracking-wide" style={{ color: PALETTE.neutral.secondary }}>
-                    {getFriendlySourceName(c.sourceName)}
-                  </td>
-                  <td className="px-5 py-4 align-top text-[14px]" style={{ color: PALETTE.neutral.primary }}>
-                    {c.detail || c.reason || "Validation completed."}
-                  </td>
-                  <td className="px-5 py-4 align-top">
-                    <EvidenceBlock evidence={c.evidence} title="View Source" />
+                  <td className="px-5 py-4 align-top text-[14px] leading-relaxed" style={{ color: PALETTE.neutral.primary }}>
+                    {(() => {
+                      let text = c.detail || c.reason || "Validation completed.";
+                      text = text.replace(/^[A-Z0-9_]+:\s*/, "");
+                      text = text.split("Source:")[0].trim();
+                      if (text.endsWith(',')) text = text.slice(0, -1) + '.';
+                      if (text && text.charAt(0) === text.charAt(0).toLowerCase()) {
+                        text = text.charAt(0).toUpperCase() + text.slice(1);
+                      }
+                      return text;
+                    })()}
                   </td>
                 </tr>
               ))}
@@ -1923,10 +1847,8 @@ export default function BidderDetail() {
   const [runningChecks, setRunningChecks] = useState(false);
   const [error, setError] = useState(null);
 
-  const [decision, setDecision] = useState("QUALIFIED");
-  const [reason, setReason] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [decisionError, setDecisionError] = useState(null);
+  // Officer decision popup
+  const [showDecision, setShowDecision] = useState(false);
   
   // Navigation State
   const [activeTab, setActiveTab] = useState("overview");
@@ -1958,18 +1880,15 @@ export default function BidderDetail() {
     }
   }
 
-  async function handleSubmitDecision(e) {
-    e.preventDefault();
-    setDecisionError(null);
-    setSubmitting(true);
+  // Called by the popup with (decision, justification)
+  async function handleSubmitDecision(decision, reason) {
     try {
-      await recordOfficerDecision(id, { decision, reason, officerId: "officer.auth@gem.gov.in" });
+      const officerId = localStorage.getItem("officerEmail") || "officer";
+      await recordOfficerDecision(id, { decision, reason, officerId });
+      setShowDecision(false);
       loadData();
-      setReason("");
     } catch (err) {
-      setDecisionError(err.response?.data?.error || err.message);
-    } finally {
-      setSubmitting(false);
+      alert(err.response?.data?.error || err.message || "Failed to record decision.");
     }
   }
 
@@ -1978,7 +1897,6 @@ export default function BidderDetail() {
   if (!bidder) return null;
 
   const flatChecks = getFlatChecks(checks);
-  const decisionProps = { decision, setDecision, reason, setReason, submitting, decisionError, onSubmit: handleSubmitDecision, currentDecision: bidder.officerDecision };
 
   return (
     <div className="min-h-screen font-sans" style={{ backgroundColor: PALETTE.bg }}>
@@ -1987,7 +1905,12 @@ export default function BidderDetail() {
         
         {activeTab === "overview" && (
           <div className="animate-fade-in">
-            <HeaderSection bidder={bidder} runningChecks={runningChecks} onRunChecks={handleRunChecks} />
+            <HeaderSection
+              bidder={bidder}
+              runningChecks={runningChecks}
+              onRunChecks={handleRunChecks}
+              onOpenDecision={() => setShowDecision(true)}
+            />
             <ComplianceScoreSection 
               score={bidder.complianceScore} 
               status={bidder.complianceStatus} 
@@ -1998,7 +1921,6 @@ export default function BidderDetail() {
             <AiAssessment recommendation={bidder.aiRecommendation} />
             <VerificationCoverage flatChecks={flatChecks} documents={bidder.documents || []} />
             <RequirementCoverageMatrix flatChecks={flatChecks} />
-            <OfficerDecision decisionProps={decisionProps} />
           </div>
         )}
         
@@ -2021,6 +1943,14 @@ export default function BidderDetail() {
         )}
 
       </div>
+
+      <OfficerDecisionModal
+      open={showDecision}
+      onClose={() => setShowDecision(false)}
+      bidder={bidder}
+      officerEmail={localStorage.getItem("officerName") || localStorage.getItem("officerEmail") || "officer"}
+      onSubmit={handleSubmitDecision}
+      />
     </div>
   );
 }

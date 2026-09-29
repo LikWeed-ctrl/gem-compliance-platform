@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const SellerProfile = require("../models/SellerProfile");
 const jwt = require("jsonwebtoken");
+const { runRegistrationChecks } = require("../services/verificationOrchestrator");
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET || "fallback_secret_for_prototype", {
@@ -13,7 +14,7 @@ const generateToken = (id) => {
 // @access  Public
 async function registerUser(req, res) {
     try {
-        const { email, password, role, companyName, panNumber } = req.body;
+        const { name, email, password, role, companyName, panNumber, gstin, udyamNumber, cin } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({ error: "Email and password are required" });
@@ -35,12 +36,27 @@ async function registerUser(req, res) {
             // For prototype simplicity, create SellerProfile directly
             const seller = await SellerProfile.create({
                 companyName,
-                panNumber
+                panNumber,
+                gstin,
+                udyamNumber,
+                cin
             });
+            
+            // Run verification immediately
+            await runRegistrationChecks(seller, false);
+            seller.registrationVerifiedAt = new Date();
+            await seller.save();
+            
             sellerProfileId = seller._id;
         }
 
+        // Officer accounts must be registered with their full name
+        if (role === "OFFICER" && !name) {
+            return res.status(400).json({ error: "name is required for officers" });
+        }
+
         const user = await User.create({
+            name: name || null,
             email,
             password,
             role: role === "OFFICER" ? "OFFICER" : "SELLER",
@@ -49,6 +65,7 @@ async function registerUser(req, res) {
 
         res.status(201).json({
             _id: user._id,
+            name: user.name,
             email: user.email,
             role: user.role,
             sellerProfileId: user.sellerProfileId,
@@ -75,6 +92,7 @@ async function loginUser(req, res) {
         if (user && (await user.comparePassword(password))) {
             res.json({
                 _id: user._id,
+                name: user.name,
                 email: user.email,
                 role: user.role,
                 sellerProfileId: user.sellerProfileId,
@@ -94,6 +112,7 @@ async function loginUser(req, res) {
 async function getMe(req, res) {
     res.json({
         _id: req.user._id,
+        name: req.user.name,
         email: req.user.email,
         role: req.user.role,
         sellerProfileId: req.user.sellerProfileId,
